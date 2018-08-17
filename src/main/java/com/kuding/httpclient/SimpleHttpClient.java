@@ -23,17 +23,17 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-@Component
 public class SimpleHttpClient {
 
-	@Autowired
 	private Gson gson;
+
+	public SimpleHttpClient(Gson gson) {
+		this.gson = gson;
+	}
 
 	private final Log logger = LogFactory.getLog(getClass());
 

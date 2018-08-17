@@ -49,4 +49,17 @@ public class ExceptionNoticeConfig {
 		ExceptionNoticeAop aop = new ExceptionNoticeAop(exceptionHandler);
 		return aop;
 	}
+
+	@Bean
+	public ExceptionHandler exceptionHandler(INoticeSendComponent noticeSendComponent) {
+		ExceptionHandler exceptionHandler = new ExceptionHandler(noticeSendComponent, exceptionNoticeProperty);
+		return exceptionHandler;
+	}
+
+	@Bean
+	@ConditionalOnProperty(name = "exceptionnotice.notice-type", havingValue = "dingding")
+	public SimpleHttpClient httpClient(Gson gson) {
+		SimpleHttpClient httpClient = new SimpleHttpClient(gson);
+		return httpClient;
+	}
 }

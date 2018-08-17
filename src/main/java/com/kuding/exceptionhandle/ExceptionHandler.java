@@ -5,7 +5,6 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.kuding.content.ExceptionNotice;
@@ -18,16 +17,18 @@ import com.kuding.redis.ExceptionRedisStorageComponent;
 @Component
 public class ExceptionHandler {
 
-	@Autowired(required = false)
 	private ExceptionRedisStorageComponent exceptionRedisStorageComponent;
 
-	@Autowired
 	private INoticeSendComponent noticeSendComponent;
 
-	@Autowired
 	private ExceptionNoticeProperty exceptionNoticeProperty;
 
 	private Set<String> checkUid = Collections.synchronizedSet(new HashSet<>());
+
+	public ExceptionHandler(INoticeSendComponent noticeSendComponent, ExceptionNoticeProperty exceptionNoticeProperty) {
+		this.noticeSendComponent = noticeSendComponent;
+		this.exceptionNoticeProperty = exceptionNoticeProperty;
+	}
 
 	/**
 	 * @param exceptionRedisStorageComponent the exceptionRedisStorageComponent to
@@ -50,11 +51,10 @@ public class ExceptionHandler {
 
 	}
 
-	public ExceptionNotice createNotice(RuntimeException exception, String method, Object[] args) {
-		if (exceptionNoticeProperty.getExcludeExceptions().contains(exception.getClass()))
+	public ExceptionNotice createNotice(Throwable ex, String method, Object[] args) {
+		if (exceptionNoticeProperty.getExcludeExceptions().contains(ex.getClass()))
 			return null;
-		ExceptionNotice exceptionNotice = new ExceptionNotice(exception, exceptionNoticeProperty.getFilterTrace(),
-				args);
+		ExceptionNotice exceptionNotice = new ExceptionNotice(ex, exceptionNoticeProperty.getFilterTrace(), args);
 		exceptionNotice.setProject(exceptionNoticeProperty.getProjectName());
 		exceptionNotice.setNoticePhone(exceptionNoticeProperty.getPhoneNum());
 		redisStore(exceptionNotice);

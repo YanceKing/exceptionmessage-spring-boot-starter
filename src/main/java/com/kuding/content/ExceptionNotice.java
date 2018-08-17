@@ -49,10 +49,10 @@ public class ExceptionNotice {
 	 */
 	protected List<String> traceInfo;
 
-	public ExceptionNotice(RuntimeException exception, String filterTrace, Object[] args) {
-		this.exceptionMessage = gainExceptionMessage(exception);
+	public ExceptionNotice(Throwable ex, String filterTrace, Object[] args) {
+		this.exceptionMessage = gainExceptionMessage(ex);
 		this.parames = args == null ? null : Arrays.stream(args).collect(toList());
-		List<StackTraceElement> list = Arrays.stream(exception.getStackTrace())
+		List<StackTraceElement> list = Arrays.stream(ex.getStackTrace())
 				.filter(x -> x.getClassName().startsWith(filterTrace))
 				.filter(x -> !x.getFileName().equals("<generated>")).collect(toList());
 		if (list.size() > 0) {
