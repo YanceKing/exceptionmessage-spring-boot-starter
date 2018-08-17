@@ -10,7 +10,6 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import com.google.gson.Gson;
 import com.kuding.aop.ExceptionNoticeAop;
 import com.kuding.exceptionhandle.ExceptionHandler;
-import com.kuding.httpclient.HttpClientProperty;
 import com.kuding.httpclient.SimpleHttpClient;
 import com.kuding.message.DingDingNoticeSendComponent;
 import com.kuding.message.INoticeSendComponent;
@@ -18,7 +17,7 @@ import com.kuding.properties.ExceptionNoticeProperty;
 import com.kuding.redis.ExceptionRedisStorageComponent;
 
 @Configuration
-@EnableConfigurationProperties({ ExceptionNoticeProperty.class, HttpClientProperty.class })
+@EnableConfigurationProperties({ ExceptionNoticeProperty.class })
 public class ExceptionNoticeConfig {
 
 	@Autowired
