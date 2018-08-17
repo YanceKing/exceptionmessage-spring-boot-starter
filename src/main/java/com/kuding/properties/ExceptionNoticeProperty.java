@@ -41,7 +41,7 @@ public class ExceptionNoticeProperty {
 	private String redisKey;
 
 	/**
-	 * 保留时间（小时）
+	 * 保留时间（小时），此字段暂时没用，开发中
 	 */
 	private long expireTime;
 
@@ -51,7 +51,7 @@ public class ExceptionNoticeProperty {
 	private NoticeType noticeType;
 
 	/**
-	 * web钩子
+	 * web钩子(根据通知类型而定，目前先暂时支持钉钉机器人)
 	 */
 	private String webHook;
 
