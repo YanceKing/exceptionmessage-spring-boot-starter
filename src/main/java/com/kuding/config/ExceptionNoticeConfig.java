@@ -20,14 +20,13 @@ import com.kuding.redis.ExceptionRedisStorageComponent;
 @EnableConfigurationProperties({ ExceptionNoticeProperty.class })
 public class ExceptionNoticeConfig {
 
-	@Autowired
-	private SimpleHttpClient simpleHttpClient;
+	
 	@Autowired
 	private ExceptionNoticeProperty exceptionNoticeProperty;
 
 	@Bean
 	@ConditionalOnProperty(name = "exceptionnotice.notice-type", havingValue = "dingding")
-	public INoticeSendComponent dingDingNoticeSendComponent() {
+	public INoticeSendComponent dingDingNoticeSendComponent(SimpleHttpClient simpleHttpClient) {
 		INoticeSendComponent component = new DingDingNoticeSendComponent(simpleHttpClient, exceptionNoticeProperty);
 		return component;
 	}
@@ -57,7 +56,7 @@ public class ExceptionNoticeConfig {
 
 	@Bean
 	@ConditionalOnProperty(name = "exceptionnotice.notice-type", havingValue = "dingding")
-	public SimpleHttpClient httpClient(Gson gson) {
+	public SimpleHttpClient simpleHttpClient(Gson gson) {
 		SimpleHttpClient httpClient = new SimpleHttpClient(gson);
 		return httpClient;
 	}

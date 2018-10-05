@@ -102,10 +102,10 @@ public class SimpleHttpClient {
 		return res;
 	}
 
-	public <T> T doPost(String url, Class<T> clazz, Map<String, String> Param, Map<String, String> headers) {
+	public <T> T doPost(String url, Class<T> clazz, Map<String, String> Param, Map<String, Object> headers) {
 		CloseableHttpClient httpclient = HttpClients.createDefault();
 		HttpPost post = new HttpPost(url);
-		headers.forEach((x, y) -> post.setHeader(x, y));
+		headers.forEach((x, y) -> post.setHeader(x, y.toString()));
 		try {
 			List<NameValuePair> list = Param.entrySet().stream()
 					.map(x -> new BasicNameValuePair(x.getKey(), x.getValue())).collect(toList());
@@ -113,6 +113,29 @@ public class SimpleHttpClient {
 			CloseableHttpResponse response = httpclient.execute(post);
 			String respStr = EntityUtils.toString(response.getEntity(), Charset.forName("UTF-8"));
 			T result = gson.fromJson(respStr, clazz);
+			response.close();
+			return result;
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		} catch (ClientProtocolException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	public <T> T doPost(String url, TypeToken<T> type, Map<String, String> Param, Map<String, Object> headers) {
+		CloseableHttpClient httpclient = HttpClients.createDefault();
+		HttpPost post = new HttpPost(url);
+		headers.forEach((x, y) -> post.setHeader(x, y.toString()));
+		try {
+			List<NameValuePair> list = Param.entrySet().stream()
+					.map(x -> new BasicNameValuePair(x.getKey(), x.getValue())).collect(toList());
+			post.setEntity(new UrlEncodedFormEntity(list));
+			CloseableHttpResponse response = httpclient.execute(post);
+			String respStr = EntityUtils.toString(response.getEntity(), Charset.forName("UTF-8"));
+			T result = gson.fromJson(respStr, type.getType());
 			response.close();
 			return result;
 		} catch (UnsupportedEncodingException e) {
@@ -133,6 +156,24 @@ public class SimpleHttpClient {
 			String respStr = EntityUtils.toString(response.getEntity());
 			response.close();
 			T result = gson.fromJson(respStr, clazz);
+			return result;
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	public <T> T doGet(String url, TypeToken<T> type, Map<String, String> param, Map<String, Object> header) {
+		CloseableHttpClient httpclient = HttpClients.createDefault();
+		String uri = String.format("%s?%s", url, String.join("&", param.entrySet().stream()
+				.map(x -> String.format("%s=%s", x.getKey(), x.getValue())).collect(toList())));
+		HttpGet get = new HttpGet(uri);
+		try {
+			header.forEach((x, y) -> get.addHeader(x, y.toString()));
+			CloseableHttpResponse response = httpclient.execute(get);
+			String respStr = EntityUtils.toString(response.getEntity());
+			response.close();
+			T result = gson.fromJson(respStr, type.getType());
 			return result;
 		} catch (IOException e) {
 			e.printStackTrace();

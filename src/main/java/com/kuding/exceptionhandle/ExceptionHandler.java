@@ -45,8 +45,9 @@ public class ExceptionHandler {
 				null);
 		exceptionNotice.setProject(exceptionNoticeProperty.getProjectName());
 		exceptionNotice.setNoticePhone(exceptionNoticeProperty.getPhoneNum());
-		redisStore(exceptionNotice);
-		messageSend(exceptionNotice);
+		boolean noHas = redisStore(exceptionNotice);
+		if (noHas)
+			messageSend(exceptionNotice);
 		return exceptionNotice;
 
 	}
@@ -57,34 +58,38 @@ public class ExceptionHandler {
 		ExceptionNotice exceptionNotice = new ExceptionNotice(ex, exceptionNoticeProperty.getFilterTrace(), args);
 		exceptionNotice.setProject(exceptionNoticeProperty.getProjectName());
 		exceptionNotice.setNoticePhone(exceptionNoticeProperty.getPhoneNum());
-		redisStore(exceptionNotice);
-		messageSend(exceptionNotice);
+		boolean noHas = redisStore(exceptionNotice);
+		if (noHas)
+			messageSend(exceptionNotice);
 		return exceptionNotice;
 
 	}
 
-	public HttpExceptionNotice createHttpNotice(RuntimeException exception, String url, Map<String, String> param) {
+	public HttpExceptionNotice createHttpNotice(RuntimeException exception, String url, Map<String, String> param,
+			String requesBody) {
 		if (exceptionNoticeProperty.getExcludeExceptions().contains(exception.getClass()))
 			return null;
 		HttpExceptionNotice exceptionNotice = new HttpExceptionNotice(exception,
-				exceptionNoticeProperty.getFilterTrace(), url, param);
+				exceptionNoticeProperty.getFilterTrace(), url, param, requesBody);
 		exceptionNotice.setProject(exceptionNoticeProperty.getProjectName());
 		exceptionNotice.setNoticePhone(exceptionNoticeProperty.getPhoneNum());
-		redisStore(exceptionNotice);
-		messageSend(exceptionNotice);
+		boolean noHas = redisStore(exceptionNotice);
+		if (noHas)
+			messageSend(exceptionNotice);
 		return exceptionNotice;
 	}
 
 	public MultiTenantExceptionNotice createHttpNotice(RuntimeException exception, String url,
-			Map<String, String> param, String tenantId) {
+			Map<String, String> param, String requestBody, String tenantId) {
 		if (exceptionNoticeProperty.getExcludeExceptions().contains(exception.getClass()))
 			return null;
 		MultiTenantExceptionNotice exceptionNotice = new MultiTenantExceptionNotice(exception,
-				exceptionNoticeProperty.getFilterTrace(), url, param, tenantId);
+				exceptionNoticeProperty.getFilterTrace(), url, param, requestBody, tenantId);
 		exceptionNotice.setProject(exceptionNoticeProperty.getProjectName());
 		exceptionNotice.setNoticePhone(exceptionNoticeProperty.getPhoneNum());
-		redisStore(exceptionNotice);
-		messageSend(exceptionNotice);
+		boolean noHas = redisStore(exceptionNotice);
+		if (noHas)
+			messageSend(exceptionNotice);
 		return exceptionNotice;
 	}
 

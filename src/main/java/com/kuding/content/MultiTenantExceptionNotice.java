@@ -5,8 +5,8 @@ import java.util.Map;
 public class MultiTenantExceptionNotice extends HttpExceptionNotice {
 
 	public MultiTenantExceptionNotice(RuntimeException exception, String filter, String url, Map<String, String> param,
-			String tenantId) {
-		super(exception, filter, url, param);
+			String requestBody, String tenantId) {
+		super(exception, filter, url, param, requestBody);
 		// TODO Auto-generated constructor stub
 		this.tenantId = tenantId;
 	}
@@ -25,6 +25,16 @@ public class MultiTenantExceptionNotice extends HttpExceptionNotice {
 	 */
 	public void setTenantId(String tenantId) {
 		this.tenantId = tenantId;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.kuding.content.HttpExceptionNotice#createText()
+	 */
+	@Override
+	public String createText() {
+		return String.format("租户信息：%s\r\n%s", tenantId, super.createText());
 	}
 
 	/*
