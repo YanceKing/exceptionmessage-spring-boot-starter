@@ -5,7 +5,8 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import org.springframework.stereotype.Component;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 
 import com.kuding.content.ExceptionNotice;
 import com.kuding.content.HttpExceptionNotice;
@@ -14,7 +15,7 @@ import com.kuding.message.INoticeSendComponent;
 import com.kuding.properties.ExceptionNoticeProperty;
 import com.kuding.redis.ExceptionRedisStorageComponent;
 
-@Component
+@EnableScheduling
 public class ExceptionHandler {
 
 	private ExceptionRedisStorageComponent exceptionRedisStorageComponent;
@@ -106,6 +107,11 @@ public class ExceptionHandler {
 
 	private void messageSend(ExceptionNotice exceptionNotice) {
 		noticeSendComponent.send(exceptionNotice);
+	}
+	
+	@Scheduled(cron = "0 25 0 * * * ")
+	public void resetCheck() {
+		checkUid.clear();
 	}
 
 }
