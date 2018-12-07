@@ -9,7 +9,7 @@
 
 **整体流程如下图**
 
-![架构](/prometheus-spring-boot-starter/src/main/resources/jiage.jpg)
+![架构](/src/main/resources/jiage.jpg)
 
 
 
