@@ -1,6 +1,8 @@
 package com.kuding.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -18,14 +20,15 @@ import com.kuding.redis.ExceptionRedisStorageComponent;
 
 @Configuration
 @EnableConfigurationProperties({ ExceptionNoticeProperty.class })
+@ConditionalOnMissingBean({ ExceptionHandler.class })
 public class ExceptionNoticeConfig {
 
-	
 	@Autowired
 	private ExceptionNoticeProperty exceptionNoticeProperty;
 
 	@Bean
 	@ConditionalOnProperty(name = "exceptionnotice.notice-type", havingValue = "dingding")
+	@ConditionalOnMissingBean(INoticeSendComponent.class)
 	public INoticeSendComponent dingDingNoticeSendComponent(SimpleHttpClient simpleHttpClient) {
 		INoticeSendComponent component = new DingDingNoticeSendComponent(simpleHttpClient, exceptionNoticeProperty);
 		return component;
@@ -33,6 +36,7 @@ public class ExceptionNoticeConfig {
 
 	@Bean
 	@ConditionalOnProperty(name = "exceptionnotice.enable-redis-storage", havingValue = "true")
+	@ConditionalOnMissingBean(ExceptionRedisStorageComponent.class)
 	public ExceptionRedisStorageComponent exceptionRedisStorageComponent(StringRedisTemplate stringRedisTemplate,
 			Gson gson, ExceptionHandler exceptionHandler) {
 		ExceptionRedisStorageComponent exceptionRedisStorageComponent = new ExceptionRedisStorageComponent(
@@ -43,6 +47,7 @@ public class ExceptionNoticeConfig {
 
 	@Bean
 	@ConditionalOnProperty(name = "exceptionnotice.enable-check-annotation", havingValue = "true")
+	@ConditionalOnMissingBean(ExceptionNoticeAop.class)
 	public ExceptionNoticeAop exceptionNoticeAop(ExceptionHandler exceptionHandler) {
 		ExceptionNoticeAop aop = new ExceptionNoticeAop(exceptionHandler);
 		return aop;
