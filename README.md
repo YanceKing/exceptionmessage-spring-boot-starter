@@ -11,6 +11,8 @@
 
 ![架构](/src/main/resources/jiage.jpg)
 
+1. 本架构核心类为``ExceptionHandler``
+
 
 
 
