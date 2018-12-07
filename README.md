@@ -34,7 +34,7 @@ public class ThreadExceptionHandler implements AsyncUncaughtExceptionHandler {
 }
 ```
 
-**重要：**同一天内的相同方法抛出的相同异常每天只处理一次，当一天结束后，异常将会重新做处理
+**重要**同一天内的相同方法抛出的相同异常每天只处理一次，当一天结束后，异常将会重新做处理
 
 另外一种是通过``@ExceptionLinstener``注解的方式来进行使用，例如：
 
