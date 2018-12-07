@@ -96,3 +96,6 @@ exceptionnotice.enable-redis-storage=是否开启redis配置
 
 3.在``application.properties``中需要配置前缀为``exceptionnotice``的相关属性
 
+####说在最后
+
+1.写文档确实是很麻烦的一件事，后面会继续完善这个架子与文档orz
