@@ -99,6 +99,7 @@ exceptionnotice.enable-redis-storage=是否开启redis配置
 ####说在最后
 
 1.写文档确实是很麻烦的一件事，后面会继续完善这个架子与文档orz
+
 2.使用该框架后，假如啥东西配对了，一旦有异常出现，效果应该会是这个样子：
 
 ![效果](/src/main/resources/QQ图片20181207210829.png)
