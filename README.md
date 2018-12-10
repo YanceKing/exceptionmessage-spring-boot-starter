@@ -12,6 +12,7 @@
 ![架构](/src/main/resources/jiage.jpg)
 
 1.本框架遵循spring-boot-starter的配置原则通过``ExceptionNoticeConfig``来进行自动化配置，当然会有相应的配置类``ExceptionNoticeProperty``
+
 2.本架构核心类为``ExceptionHandler``,此类用于搜集被引用工程中的异常信息；搜集信息有两种方式，第一种方式是直接调用``ExceptionHandler``中的``createNotice``方法，例如在线程池中处理异常时：
 
 ```
