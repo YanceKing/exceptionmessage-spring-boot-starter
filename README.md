@@ -1,5 +1,8 @@
 # 一个异常通知的spring-boot-start框架 prometheus-spring-boot-starter
 
+[![Fork me on Gitee](https://gitee.com/ITEater/prometheus-spring-boot-starter/widgets/widget_2.svg)](https://gitee.com/ITEater/prometheus-spring-boot-starter)
+
+
 #### 前言
 
 首先，本人很懒（orz），虽然说日常写完项目代码后是都需要进行相关代码段的测试的，但事与愿违，有很多情况你可能会忘了测试，或者测试了感觉没问题实际上问题没暴露（主观测试很容易让测试结果按照你的想法输出），然后把代码merge，然后提交到测试服务器，然后就去睡大觉了，第二天醒来以后，发现程序运行各种bug，这时候你就开始把前一天的代码重新拉出来开始看……等等，我先收集一下bug吧，然后打开服务器，打开输出日志……天哪，由于是测试服务器，你可能会开很多的日志（比如：sql日志，格式化了还带参数；接口调用日志等等等等），有可能某个同事由于闲的蛋疼，特意对于某个出错的功能试了十几遍……面对成千上万行的日志，针对性的找出相应的异常实在是一件令人头疼的事。所以就需要每当工程出异常了，直接通知我不就好了嘛？
@@ -97,11 +100,11 @@ exceptionnotice.enable-redis-storage=是否开启redis配置
 
 3.在``application.properties``中需要配置前缀为``exceptionnotice``的相关属性
 
-####说在最后
+#### 说在最后
 
-1.写文档确实是很麻烦的一件事，后面会继续完善这个架子与文档orz
+1. 写文档确实是很麻烦的一件事，后面会继续完善这个架子与文档orz
 
-2.使用该框架后，假如啥东西配对了，一旦有异常出现，效果应该会是这个样子：
+2. 使用该框架后，假如啥东西配对了，一旦有异常出现，效果应该会是这个样子：
 
 ![效果](/src/main/resources/QQ图片20181207210829.png)
 
