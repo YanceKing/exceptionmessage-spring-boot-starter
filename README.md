@@ -14,9 +14,9 @@
 
 ![架构](/src/main/resources/jiage.jpg)
 
-1.本框架遵循spring-boot-starter的配置原则通过``ExceptionNoticeConfig``来进行自动化配置，当然会有相应的配置类``ExceptionNoticeProperty``
+1. 本框架遵循spring-boot-starter的配置原则通过``ExceptionNoticeConfig``来进行自动化配置，当然会有相应的配置类``ExceptionNoticeProperty``
 
-2.本架构核心类为``ExceptionHandler``,此类用于搜集被引用工程中的异常信息；搜集信息有两种方式，第一种方式是直接调用``ExceptionHandler``中的``createNotice``方法，例如在线程池中处理异常时：
+2. 本架构核心类为``ExceptionHandler``,此类用于搜集被引用工程中的异常信息；搜集信息有两种方式，第一种方式是直接调用``ExceptionHandler``中的``createNotice``方法，例如在线程池中处理异常时：
 
 ```
 public class ThreadExceptionHandler implements AsyncUncaughtExceptionHandler {
@@ -60,7 +60,7 @@ public class ManagerTopUpStrategyService extends BaseService<ManagerTopUpStrateg
 
 在处理异常时，``ExceptionHandler``会将异常中的``stackTrace``的追踪信息按照包路径进行过滤，需要过滤的包路径可以在``application.properties``配置``exceptionnotice.filter-trace=***``(***表示某个包路径)即可
 
-3.在``ExceptionHandler``整理好相关的异常数据后，就可以通过实现``INoticeSendComponent``的相关类来进行通知了，目前只实现了钉钉机器人的异常通知（webhook），后续还会添加更多的实现方式，要实现钉钉自机器人通知只需要做如下的配置：
+3. 在``ExceptionHandler``整理好相关的异常数据后，就可以通过实现``INoticeSendComponent``的相关类来进行通知了，目前只实现了钉钉机器人的异常通知（webhook），后续还会添加更多的实现方式，要实现钉钉自机器人通知只需要做如下的配置：
 
 ```
 exceptionnotice.phone-num=手机号
@@ -74,7 +74,7 @@ exceptionnotice.web-hook=https://oapi.dingtalk.com/robot/send?access_token=.....
 
 
 
-4.异常信息也可以做一层数据存储，存储的方式是Redis存储，redis需要spring-boot的[redis自动化配置(自行查找相关配置)](https://docs.spring.io/spring-boot/docs/2.1.1.RELEASE/reference/htmlsingle/#appendix)，当然，也可以不开启redis存储。
+4. 异常信息也可以做一层数据存储，存储的方式是Redis存储，redis需要spring-boot的[redis自动化配置(自行查找相关配置)](https://docs.spring.io/spring-boot/docs/2.1.1.RELEASE/reference/htmlsingle/#appendix)，当然，也可以不开启redis存储。
 
 异常的redis配置需要再``application.properties``中做如下配置
 
@@ -86,9 +86,9 @@ exceptionnotice.enable-redis-storage=是否开启redis配置
 
 #### 咋安装
 
-1.将本工程通过maven打包（maven install）到本地工程
+1. 将本工程通过maven打包（maven install）到本地工程
 
-2.再其他maven工程的``pom.xml``文件中做如下配置
+2. 再其他maven工程的``pom.xml``文件中做如下配置
 
 ```
 		<dependency>
@@ -98,7 +98,7 @@ exceptionnotice.enable-redis-storage=是否开启redis配置
 		</dependency>
 ```
 
-3.在``application.properties``中需要配置前缀为``exceptionnotice``的相关属性
+3. 在``application.properties``中需要配置前缀为``exceptionnotice``的相关属性
 
 #### 说在最后
 
