@@ -173,4 +173,4 @@ exceptionnotice.enable-redis-storage=是否开启redis配置
 
 3. 邮箱的话应该是这个样子
 
-![效果2](/src/main/resources/)
+![效果2](/src/main/resources/}PMKHZO1E3WJHU`9@C@BX8E.png)
