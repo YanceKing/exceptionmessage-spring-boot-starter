@@ -1,7 +1,6 @@
 package com.kuding.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.mail.MailProperties;
@@ -44,7 +43,6 @@ public class ExceptionNoticeConfig {
 	@Bean
 	@ConditionalOnProperty(name = "exceptionnotice.notice-type", havingValue = "email")
 	@ConditionalOnMissingBean({ INoticeSendComponent.class })
-//	@ConditionalOnBean({ MailSender.class, MailProperties.class })
 	public INoticeSendComponent EmailNoticeSendComponent(MailSender mailSender, MailProperties mailProperties,
 			EmailExceptionNoticeProperty emailExceptionNoticeProperty) {
 		INoticeSendComponent component = new com.kuding.message.EmailNoticeSendComponent(mailSender, mailProperties,
