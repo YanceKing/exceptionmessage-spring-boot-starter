@@ -5,14 +5,12 @@ public class DingDingNotice {
 	private DingDingText text;
 	private DingDingAt at;
 	private String msgtype = "text";
-	private boolean isAtAll = false;
 
-	public DingDingNotice(DingDingText text, DingDingAt at, String msgtype, boolean isAtAll) {
+	public DingDingNotice(DingDingText text, DingDingAt at, String msgtype) {
 		super();
 		this.text = text;
 		this.at = at;
 		this.msgtype = msgtype;
-		this.isAtAll = isAtAll;
 	}
 
 	public DingDingNotice(DingDingText text, DingDingAt at) {
@@ -33,8 +31,7 @@ public class DingDingNotice {
 	}
 
 	/**
-	 * @param text
-	 *            the text to set
+	 * @param text the text to set
 	 */
 	public void setText(DingDingText text) {
 		this.text = text;
@@ -48,8 +45,7 @@ public class DingDingNotice {
 	}
 
 	/**
-	 * @param at
-	 *            the at to set
+	 * @param at the at to set
 	 */
 	public void setAt(DingDingAt at) {
 		this.at = at;
@@ -63,26 +59,10 @@ public class DingDingNotice {
 	}
 
 	/**
-	 * @param msgtype
-	 *            the msgtype to set
+	 * @param msgtype the msgtype to set
 	 */
 	public void setMsgtype(String msgtype) {
 		this.msgtype = msgtype;
-	}
-
-	/**
-	 * @return the isAtAll
-	 */
-	public boolean isAtAll() {
-		return isAtAll;
-	}
-
-	/**
-	 * @param isAtAll
-	 *            the isAtAll to set
-	 */
-	public void setAtAll(boolean isAtAll) {
-		this.isAtAll = isAtAll;
 	}
 
 }

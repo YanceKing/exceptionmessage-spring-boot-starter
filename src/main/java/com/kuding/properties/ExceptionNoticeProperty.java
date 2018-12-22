@@ -13,17 +13,12 @@ public class ExceptionNoticeProperty {
 	/**
 	 * 过滤信息的关键字
 	 */
-	private String filterTrace = "com.kuding";
+	private String filterTrace;
 
 	/**
 	 * 异常工程名
 	 */
 	private String projectName;
-
-	/**
-	 * 电话信息
-	 */
-	private String phoneNum;
 
 	/**
 	 * 通过注解进行监控
@@ -49,11 +44,6 @@ public class ExceptionNoticeProperty {
 	 * 通知类型
 	 */
 	private NoticeType noticeType;
-
-	/**
-	 * web钩子(根据通知类型而定，目前先暂时支持钉钉机器人)
-	 */
-	private String webHook;
 
 	/**
 	 * 排除的需要统计的异常
@@ -130,19 +120,6 @@ public class ExceptionNoticeProperty {
 		this.noticeType = noticeType;
 	}
 
-	/**
-	 * @return the webHook
-	 */
-	public String getWebHook() {
-		return webHook;
-	}
-
-	/**
-	 * @param webHook the webHook to set
-	 */
-	public void setWebHook(String webHook) {
-		this.webHook = webHook;
-	}
 
 	/**
 	 * @return the excludeExceptions
@@ -186,31 +163,17 @@ public class ExceptionNoticeProperty {
 		this.projectName = projectName;
 	}
 
-	/**
-	 * @return the phoneNum
-	 */
-	public String getPhoneNum() {
-		return phoneNum;
-	}
-
-	/**
-	 * @param phoneNum the phoneNum to set
-	 */
-	public void setPhoneNum(String phoneNum) {
-		this.phoneNum = phoneNum;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
+	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
 	public String toString() {
-		return "ExceptionNoticeProperty [filterTrace=" + filterTrace + ", projectName=" + projectName + ", phoneNum="
-				+ phoneNum + ", enableCheckAnnotation=" + enableCheckAnnotation + ", enableRedisStorage="
-				+ enableRedisStorage + ", redisKey=" + redisKey + ", expireTime=" + expireTime + ", noticeType="
-				+ noticeType + ", webHook=" + webHook + ", excludeExceptions=" + excludeExceptions + "]";
+		return "ExceptionNoticeProperty [filterTrace=" + filterTrace + ", projectName=" + projectName
+				+ ", enableCheckAnnotation=" + enableCheckAnnotation + ", enableRedisStorage=" + enableRedisStorage
+				+ ", redisKey=" + redisKey + ", expireTime=" + expireTime + ", noticeType=" + noticeType
+				+ ", excludeExceptions=" + excludeExceptions + "]";
 	}
+
+	
 
 }

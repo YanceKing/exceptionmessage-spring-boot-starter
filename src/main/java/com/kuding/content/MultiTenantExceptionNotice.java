@@ -45,9 +45,9 @@ public class MultiTenantExceptionNotice extends HttpExceptionNotice {
 	@Override
 	public String toString() {
 		return "MultiTenantExceptionNotice [tenantId=" + tenantId + ", url=" + url + ", paramInfo=" + paramInfo
-				+ ", project=" + project + ", noticePhone=" + noticePhone + ", methodName=" + methodName + ", parames="
-				+ parames + ", classPath=" + classPath + ", exceptionMessage=" + exceptionMessage + ", traceInfo="
-				+ traceInfo + "]";
+				+ ", requestBody=" + requestBody + ", project=" + project + ", uid=" + uid + ", methodName="
+				+ methodName + ", parames=" + parames + ", classPath=" + classPath + ", exceptionMessage="
+				+ exceptionMessage + ", traceInfo=" + traceInfo + "]";
 	}
 
 }

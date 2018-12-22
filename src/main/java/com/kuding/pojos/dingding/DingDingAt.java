@@ -4,6 +4,8 @@ public class DingDingAt {
 
 	private String[] atMobiles;
 
+	private boolean isAtAll = false;
+
 	public DingDingAt(String... atMobiles) {
 		this.atMobiles = atMobiles;
 	}
@@ -16,11 +18,24 @@ public class DingDingAt {
 	}
 
 	/**
-	 * @param atMobiles
-	 *            the atMobiles to set
+	 * @param atMobiles the atMobiles to set
 	 */
 	public void setAtMobiles(String[] atMobiles) {
 		this.atMobiles = atMobiles;
+	}
+
+	/**
+	 * @return the isAtAll
+	 */
+	public boolean isAtAll() {
+		return isAtAll;
+	}
+
+	/**
+	 * @param isAtAll the isAtAll to set
+	 */
+	public void setAtAll(boolean isAtAll) {
+		this.isAtAll = isAtAll;
 	}
 
 }

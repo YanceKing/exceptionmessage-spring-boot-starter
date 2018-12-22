@@ -45,7 +45,6 @@ public class ExceptionHandler {
 		ExceptionNotice exceptionNotice = new ExceptionNotice(exception, exceptionNoticeProperty.getFilterTrace(),
 				null);
 		exceptionNotice.setProject(exceptionNoticeProperty.getProjectName());
-		exceptionNotice.setNoticePhone(exceptionNoticeProperty.getPhoneNum());
 		boolean noHas = redisStore(exceptionNotice);
 		if (noHas)
 			messageSend(exceptionNotice);
@@ -58,7 +57,6 @@ public class ExceptionHandler {
 			return null;
 		ExceptionNotice exceptionNotice = new ExceptionNotice(ex, exceptionNoticeProperty.getFilterTrace(), args);
 		exceptionNotice.setProject(exceptionNoticeProperty.getProjectName());
-		exceptionNotice.setNoticePhone(exceptionNoticeProperty.getPhoneNum());
 		boolean noHas = redisStore(exceptionNotice);
 		if (noHas)
 			messageSend(exceptionNotice);
@@ -73,7 +71,6 @@ public class ExceptionHandler {
 		HttpExceptionNotice exceptionNotice = new HttpExceptionNotice(exception,
 				exceptionNoticeProperty.getFilterTrace(), url, param, requesBody);
 		exceptionNotice.setProject(exceptionNoticeProperty.getProjectName());
-		exceptionNotice.setNoticePhone(exceptionNoticeProperty.getPhoneNum());
 		boolean noHas = redisStore(exceptionNotice);
 		if (noHas)
 			messageSend(exceptionNotice);
@@ -87,7 +84,6 @@ public class ExceptionHandler {
 		MultiTenantExceptionNotice exceptionNotice = new MultiTenantExceptionNotice(exception,
 				exceptionNoticeProperty.getFilterTrace(), url, param, requestBody, tenantId);
 		exceptionNotice.setProject(exceptionNoticeProperty.getProjectName());
-		exceptionNotice.setNoticePhone(exceptionNoticeProperty.getPhoneNum());
 		boolean noHas = redisStore(exceptionNotice);
 		if (noHas)
 			messageSend(exceptionNotice);
@@ -108,7 +104,7 @@ public class ExceptionHandler {
 	private void messageSend(ExceptionNotice exceptionNotice) {
 		noticeSendComponent.send(exceptionNotice);
 	}
-	
+
 	@Scheduled(cron = "0 25 0 * * * ")
 	public void resetCheck() {
 		checkUid.clear();

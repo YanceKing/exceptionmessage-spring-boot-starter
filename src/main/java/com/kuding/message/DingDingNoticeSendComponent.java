@@ -7,6 +7,7 @@ import com.kuding.content.ExceptionNotice;
 import com.kuding.httpclient.SimpleHttpClient;
 import com.kuding.pojos.dingding.DingDingNotice;
 import com.kuding.pojos.dingding.DingDingResult;
+import com.kuding.properties.DingDingExceptionNoticeProperty;
 import com.kuding.properties.ExceptionNoticeProperty;
 
 public class DingDingNoticeSendComponent implements INoticeSendComponent {
@@ -15,12 +16,16 @@ public class DingDingNoticeSendComponent implements INoticeSendComponent {
 
 	private ExceptionNoticeProperty exceptionNoticeProperty;
 
+	private DingDingExceptionNoticeProperty dingDingExceptionNoticeProperty;
+
 	private final Log logger = LogFactory.getLog(getClass());
 
 	public DingDingNoticeSendComponent(SimpleHttpClient simpleHttpClient,
-			ExceptionNoticeProperty exceptionNoticeProperty) {
+			ExceptionNoticeProperty exceptionNoticeProperty,
+			DingDingExceptionNoticeProperty dingDingExceptionNoticeProperty) {
 		this.simpleHttpClient = simpleHttpClient;
 		this.exceptionNoticeProperty = exceptionNoticeProperty;
+		this.dingDingExceptionNoticeProperty = dingDingExceptionNoticeProperty;
 	}
 
 	/**
@@ -54,8 +59,8 @@ public class DingDingNoticeSendComponent implements INoticeSendComponent {
 	@Override
 	public void send(ExceptionNotice exceptionNotice) {
 		DingDingNotice dingDingNotice = new DingDingNotice(exceptionNotice.createText(),
-				exceptionNotice.getNoticePhone());
-		DingDingResult result = simpleHttpClient.post(exceptionNoticeProperty.getWebHook(), dingDingNotice,
+				dingDingExceptionNoticeProperty.getPhoneNum());
+		DingDingResult result = simpleHttpClient.post(dingDingExceptionNoticeProperty.getWebHook(), dingDingNotice,
 				DingDingResult.class);
 		logger.debug(result);
 	}
