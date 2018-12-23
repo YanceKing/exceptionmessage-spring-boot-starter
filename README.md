@@ -113,7 +113,7 @@ exceptionnotice.dingding.web-hook=https://oapi.dingtalk.com/robot/send?access_to
 
 
 
-   * 邮件通知是基于``spring-boot-starter-mail``来实现的，所以需要用到spring boot的[email相关配置](https://docs.spring.io/spring-boot/docs/2.1.1.RELEASE/reference/htmlsingle/#boot-features-email "、email相关配置")
+   * 邮件通知是基于``spring-boot-starter-mail``来实现的，所以需要用到spring boot的[email相关配置](https://docs.spring.io/spring-boot/docs/2.1.1.RELEASE/reference/htmlsingle/#boot-features-email "、email相关配置")，当然，你可能还需要开启邮箱的stmp服务。
    
 ```
 spring.mail.host=smtp.163.com（各家的不一样）
