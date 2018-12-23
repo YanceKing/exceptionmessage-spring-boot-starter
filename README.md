@@ -10,7 +10,7 @@
 
 #### 更新（重要）
 
-1. 修改了一些bug（dingdingAt字段的位置问题），去除了ExexceptionNotice中的phoneNum字段（没有用）
+1. 修改了一些bug（dingdingAt字段的位置问题，注解拼写的问题），去除了ExexceptionNotice中的phoneNum字段（没有用）
 2. 新增邮件通知（详情参照下面的文档）
 3. 配置文件的结构改变（重要）：钉钉相关配置之前有两个：``exceptionnotice.phone-num``和``exceptionnotice.web-hook``，新版本改为``exceptionnotice.dingding.phone-num``和``exceptionnotice.dingding.web-hook``;同理邮件的配置前缀为``exceptionnotice.email``
 4. 钉钉的配置``exceptionnotice.phone-num``现在可以添加多个手机号了（逗号分隔）
