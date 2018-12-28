@@ -13,11 +13,7 @@ public class ExceptionNotice {
 	 * 工程名
 	 */
 	protected String project;
-
-	/**
-	 * 通知电话
-	 */
-	protected String noticePhone;
+ 
 
 	/**
 	 * 异常的标识码
@@ -104,19 +100,6 @@ public class ExceptionNotice {
 		this.project = project;
 	}
 
-	/**
-	 * @return the noticePhone
-	 */
-	public String getNoticePhone() {
-		return noticePhone;
-	}
-
-	/**
-	 * @param noticePhone the noticePhone to set
-	 */
-	public void setNoticePhone(String noticePhone) {
-		this.noticePhone = noticePhone;
-	}
 
 	/**
 	 * @return the methodName
@@ -202,16 +185,17 @@ public class ExceptionNotice {
 		this.uid = uid;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
 	public String toString() {
-		return "ExceptionNotice [project=" + project + ", noticePhone=" + noticePhone + ", uid=" + uid + ", methodName="
-				+ methodName + ", parames=" + parames + ", classPath=" + classPath + ", exceptionMessage="
-				+ exceptionMessage + ", traceInfo=" + traceInfo + "]";
+		return "ExceptionNotice [project=" + project + ", uid=" + uid + ", methodName=" + methodName + ", parames="
+				+ parames + ", classPath=" + classPath + ", exceptionMessage=" + exceptionMessage + ", traceInfo="
+				+ traceInfo + "]";
 	}
+
+
+	
 
 }

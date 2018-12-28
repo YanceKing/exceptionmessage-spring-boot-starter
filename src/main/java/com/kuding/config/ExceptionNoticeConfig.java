@@ -3,10 +3,12 @@ package com.kuding.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.autoconfigure.mail.MailProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.mail.MailSender;
 
 import com.google.gson.Gson;
 import com.kuding.aop.ExceptionNoticeAop;
@@ -14,11 +16,14 @@ import com.kuding.exceptionhandle.ExceptionHandler;
 import com.kuding.httpclient.SimpleHttpClient;
 import com.kuding.message.DingDingNoticeSendComponent;
 import com.kuding.message.INoticeSendComponent;
+import com.kuding.properties.DingDingExceptionNoticeProperty;
+import com.kuding.properties.EmailExceptionNoticeProperty;
 import com.kuding.properties.ExceptionNoticeProperty;
 import com.kuding.redis.ExceptionRedisStorageComponent;
 
 @Configuration
-@EnableConfigurationProperties({ ExceptionNoticeProperty.class })
+@EnableConfigurationProperties({ ExceptionNoticeProperty.class, DingDingExceptionNoticeProperty.class,
+		EmailExceptionNoticeProperty.class })
 @ConditionalOnMissingBean({ ExceptionHandler.class })
 public class ExceptionNoticeConfig {
 
@@ -28,8 +33,20 @@ public class ExceptionNoticeConfig {
 	@Bean
 	@ConditionalOnProperty(name = "exceptionnotice.notice-type", havingValue = "dingding")
 	@ConditionalOnMissingBean(INoticeSendComponent.class)
-	public INoticeSendComponent dingDingNoticeSendComponent(SimpleHttpClient simpleHttpClient) {
-		INoticeSendComponent component = new DingDingNoticeSendComponent(simpleHttpClient, exceptionNoticeProperty);
+	public INoticeSendComponent dingDingNoticeSendComponent(SimpleHttpClient simpleHttpClient,
+			DingDingExceptionNoticeProperty dingDingExceptionNoticeProperty) {
+		INoticeSendComponent component = new DingDingNoticeSendComponent(simpleHttpClient, exceptionNoticeProperty,
+				dingDingExceptionNoticeProperty);
+		return component;
+	}
+
+	@Bean
+	@ConditionalOnProperty(name = "exceptionnotice.notice-type", havingValue = "email")
+	@ConditionalOnMissingBean({ INoticeSendComponent.class })
+	public INoticeSendComponent EmailNoticeSendComponent(MailSender mailSender, MailProperties mailProperties,
+			EmailExceptionNoticeProperty emailExceptionNoticeProperty) {
+		INoticeSendComponent component = new com.kuding.message.EmailNoticeSendComponent(mailSender, mailProperties,
+				emailExceptionNoticeProperty);
 		return component;
 	}
 
@@ -53,6 +70,7 @@ public class ExceptionNoticeConfig {
 	}
 
 	@Bean
+	@ConditionalOnMissingBean({ ExceptionHandler.class })
 	public ExceptionHandler exceptionHandler(INoticeSendComponent noticeSendComponent) {
 		ExceptionHandler exceptionHandler = new ExceptionHandler(noticeSendComponent, exceptionNoticeProperty);
 		return exceptionHandler;
@@ -64,4 +82,5 @@ public class ExceptionNoticeConfig {
 		SimpleHttpClient httpClient = new SimpleHttpClient(gson);
 		return httpClient;
 	}
+
 }
