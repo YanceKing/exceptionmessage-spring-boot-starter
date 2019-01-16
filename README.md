@@ -99,6 +99,8 @@ public class ManagerTopUpStrategyService extends BaseService<ManagerTopUpStrateg
 
 在处理异常时，``ExceptionHandler``会将异常中的``stackTrace``的追踪信息按照包路径进行过滤，需要过滤的包路径可以在``application.properties``配置``exceptionnotice.filter-trace=***``(***表示某个包路径)即可
 
+**重要**：``exceptionnotice.filter-trace``属于必填项！
+
 在``ExceptionHandler``整理好相关的异常数据后，就可以通过实现``INoticeSendComponent``的相关类来进行通知了；
 
 
