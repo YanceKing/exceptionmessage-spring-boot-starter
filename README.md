@@ -11,6 +11,19 @@
 
 ![jdk版本](https://img.shields.io/badge/java-1.8%2B-red.svg?style=for-the-badge&logo=appveyor)
 
+#### 2019-03-14更新
+
+1. 对``ExceptionNoticeConfig``中aop的配置：``exceptionNoticeAop(ExceptionHandler exceptionHandler)``的一个条件中添加了``matchIfMissing = true``来保证默认情况下的aop对象的正常加载
+
+```
+        @Bean
+	@ConditionalOnProperty(name = "exceptionnotice.enable-check-annotation", havingValue = "true", matchIfMissing = true)
+	@ConditionalOnMissingBean(ExceptionNoticeAop.class)
+	public ExceptionNoticeAop exceptionNoticeAop(ExceptionHandler exceptionHandler) {
+		ExceptionNoticeAop aop = new ExceptionNoticeAop(exceptionHandler);
+		return aop;
+	}
+```
 
 #### 2019-01-14更新
 
