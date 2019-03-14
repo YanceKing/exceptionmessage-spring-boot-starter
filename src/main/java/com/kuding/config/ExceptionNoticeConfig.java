@@ -62,7 +62,7 @@ public class ExceptionNoticeConfig {
 	}
 
 	@Bean
-	@ConditionalOnProperty(name = "exceptionnotice.enable-check-annotation", havingValue = "true")
+	@ConditionalOnProperty(name = "exceptionnotice.enable-check-annotation", havingValue = "true", matchIfMissing = true)
 	@ConditionalOnMissingBean(ExceptionNoticeAop.class)
 	public ExceptionNoticeAop exceptionNoticeAop(ExceptionHandler exceptionHandler) {
 		ExceptionNoticeAop aop = new ExceptionNoticeAop(exceptionHandler);
