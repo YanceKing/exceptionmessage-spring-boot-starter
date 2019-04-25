@@ -11,6 +11,16 @@
 
 ![jdk版本](https://img.shields.io/badge/java-1.8%2B-red.svg?style=for-the-badge&logo=appveyor)
 
+
+#### 2019-04-25更新
+
+1. 将spring的版本升级为最新版本（2.1.4），本工程的版本升级为0.2.1
+
+2. 在``ExceptionNoticeProperty``配置中加入了新的注解``openNotice``(默认状态为false)，方便开启或关闭整个异常通知框架（感谢网友支持）
+
+3. 关于工程名的问题：``exceptionnotice.project-name``建议添上，之前想过用``spring.application.name``做替代方案，之后再加
+
+
 #### 2019-03-14更新
 
 1. 对``ExceptionNoticeConfig``中aop的配置：``exceptionNoticeAop(ExceptionHandler exceptionHandler)``的一个条件中添加了``matchIfMissing = true``来保证默认情况下的aop对象的正常加载
@@ -64,6 +74,8 @@ public class MyNoticeSendComponent implements INoticeSendComponent{
 ![架构](/src/main/resources/jiage.jpg)
 
 本框架遵循spring-boot-starter的配置原则通过``ExceptionNoticeConfig``来进行自动化配置，当然会有相应的配置类``ExceptionNoticeProperty``。
+
+**(0.2.1版本)**,本框架开启需要在``application.properties（yml）``中配置``exceptionnotice.open-notice=true``方能开启异常通知
 
 **(0.2版本)**，异常通知的方式目前有*钉钉*和*邮件*两种
 

@@ -24,7 +24,7 @@ import com.kuding.redis.ExceptionRedisStorageComponent;
 @Configuration
 @EnableConfigurationProperties({ ExceptionNoticeProperty.class, DingDingExceptionNoticeProperty.class,
 		EmailExceptionNoticeProperty.class })
-@ConditionalOnMissingBean({ ExceptionHandler.class })
+@ConditionalOnProperty(name = "exceptionnotice.open-notice", havingValue = "true")
 public class ExceptionNoticeConfig {
 
 	@Autowired

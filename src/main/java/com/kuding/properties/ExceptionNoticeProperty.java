@@ -11,6 +11,11 @@ import com.kuding.properties.enums.NoticeType;
 public class ExceptionNoticeProperty {
 
 	/**
+	 * 是否开启异常通知
+	 */
+	private boolean openNotice = false;
+
+	/**
 	 * 过滤信息的关键字
 	 */
 	private String filterTrace;
@@ -120,7 +125,6 @@ public class ExceptionNoticeProperty {
 		this.noticeType = noticeType;
 	}
 
-
 	/**
 	 * @return the excludeExceptions
 	 */
@@ -163,17 +167,20 @@ public class ExceptionNoticeProperty {
 		this.projectName = projectName;
 	}
 
-	/* (non-Javadoc)
-	 * @see java.lang.Object#toString()
+	/**
+	 * @return the openNotice
 	 */
-	@Override
-	public String toString() {
-		return "ExceptionNoticeProperty [filterTrace=" + filterTrace + ", projectName=" + projectName
-				+ ", enableCheckAnnotation=" + enableCheckAnnotation + ", enableRedisStorage=" + enableRedisStorage
-				+ ", redisKey=" + redisKey + ", expireTime=" + expireTime + ", noticeType=" + noticeType
-				+ ", excludeExceptions=" + excludeExceptions + "]";
+	public boolean isOpenNotice() {
+		return openNotice;
+	}
+
+	/**
+	 * @param openNotice the openNotice to set
+	 */
+	public void setOpenNotice(boolean openNotice) {
+		this.openNotice = openNotice;
 	}
 
 	
-
+	
 }
