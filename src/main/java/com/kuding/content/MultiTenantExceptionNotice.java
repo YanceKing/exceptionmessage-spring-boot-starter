@@ -5,9 +5,8 @@ import java.util.Map;
 public class MultiTenantExceptionNotice extends HttpExceptionNotice {
 
 	public MultiTenantExceptionNotice(RuntimeException exception, String filter, String url, Map<String, String> param,
-			String requestBody, String tenantId) {
-		super(exception, filter, url, param, requestBody);
-		// TODO Auto-generated constructor stub
+			String requestBody, Map<String, String> headers, String tenantId) {
+		super(exception, filter, url, param, requestBody, headers);
 		this.tenantId = tenantId;
 	}
 

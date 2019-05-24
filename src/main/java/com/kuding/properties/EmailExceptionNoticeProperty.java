@@ -1,10 +1,5 @@
 package com.kuding.properties;
 
-import java.util.Arrays;
-
-import org.springframework.boot.context.properties.ConfigurationProperties;
-
-@ConfigurationProperties(prefix = "exceptionnotice.email")
 public class EmailExceptionNoticeProperty {
 
 	/**
@@ -82,17 +77,5 @@ public class EmailExceptionNoticeProperty {
 	public void setBcc(String[] bcc) {
 		this.bcc = bcc;
 	}
-
-	/* (non-Javadoc)
-	 * @see java.lang.Object#toString()
-	 */
-	@Override
-	public String toString() {
-		return "EmailExceptionNoticeProperty [from=" + from + ", to=" + Arrays.toString(to) + ", cc="
-				+ Arrays.toString(cc) + ", bcc=" + Arrays.toString(bcc) + "]";
-	}
-	
-	
-	
 
 }

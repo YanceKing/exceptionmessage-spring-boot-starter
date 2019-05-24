@@ -2,13 +2,17 @@ package com.kuding.properties;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
-import com.kuding.properties.enums.NoticeType;
-
 @ConfigurationProperties(prefix = "exceptionnotice")
 public class ExceptionNoticeProperty {
+
+	/**
+	 * 是否开启异常通知
+	 */
+	private Boolean openNotice;
 
 	/**
 	 * 过滤信息的关键字
@@ -41,14 +45,33 @@ public class ExceptionNoticeProperty {
 	private long expireTime;
 
 	/**
-	 * 通知类型
-	 */
-	private NoticeType noticeType;
-
-	/**
 	 * 排除的需要统计的异常
 	 */
 	private List<Class<? extends RuntimeException>> excludeExceptions = new LinkedList<>();
+
+	/**
+	 * 发送钉钉异常通知给谁
+	 */
+	Map<String, DingDingExceptionNoticeProperty> dingding;
+
+	/**
+	 * 发送邮件异常通知给谁
+	 */
+	Map<String, EmailExceptionNoticeProperty> email;
+
+	/**
+	 * @return the openNotice
+	 */
+	public Boolean getOpenNotice() {
+		return openNotice;
+	}
+
+	/**
+	 * @param openNotice the openNotice to set
+	 */
+	public void setOpenNotice(Boolean openNotice) {
+		this.openNotice = openNotice;
+	}
 
 	/**
 	 * @return the filterTrace
@@ -62,6 +85,20 @@ public class ExceptionNoticeProperty {
 	 */
 	public void setFilterTrace(String filterTrace) {
 		this.filterTrace = filterTrace;
+	}
+
+	/**
+	 * @return the projectName
+	 */
+	public String getProjectName() {
+		return projectName;
+	}
+
+	/**
+	 * @param projectName the projectName to set
+	 */
+	public void setProjectName(String projectName) {
+		this.projectName = projectName;
 	}
 
 	/**
@@ -93,6 +130,20 @@ public class ExceptionNoticeProperty {
 	}
 
 	/**
+	 * @return the redisKey
+	 */
+	public String getRedisKey() {
+		return redisKey;
+	}
+
+	/**
+	 * @param redisKey the redisKey to set
+	 */
+	public void setRedisKey(String redisKey) {
+		this.redisKey = redisKey;
+	}
+
+	/**
 	 * @return the expireTime
 	 */
 	public long getExpireTime() {
@@ -105,21 +156,6 @@ public class ExceptionNoticeProperty {
 	public void setExpireTime(long expireTime) {
 		this.expireTime = expireTime;
 	}
-
-	/**
-	 * @return the noticeType
-	 */
-	public NoticeType getNoticeType() {
-		return noticeType;
-	}
-
-	/**
-	 * @param noticeType the noticeType to set
-	 */
-	public void setNoticeType(NoticeType noticeType) {
-		this.noticeType = noticeType;
-	}
-
 
 	/**
 	 * @return the excludeExceptions
@@ -136,44 +172,39 @@ public class ExceptionNoticeProperty {
 	}
 
 	/**
-	 * @return the redisKey
+	 * @return the dingding
 	 */
-	public String getRedisKey() {
-		return redisKey;
+	public Map<String, DingDingExceptionNoticeProperty> getDingding() {
+		return dingding;
 	}
 
 	/**
-	 * @param redisKey the redisKey to set
+	 * @param dingding the dingding to set
 	 */
-	public void setRedisKey(String redisKey) {
-		this.redisKey = redisKey;
+	public void setDingding(Map<String, DingDingExceptionNoticeProperty> dingding) {
+		this.dingding = dingding;
 	}
 
 	/**
-	 * @return the projectName
+	 * @return the email
 	 */
-	public String getProjectName() {
-		return projectName;
+	public Map<String, EmailExceptionNoticeProperty> getEmail() {
+		return email;
 	}
 
 	/**
-	 * @param projectName the projectName to set
+	 * @param email the email to set
 	 */
-	public void setProjectName(String projectName) {
-		this.projectName = projectName;
+	public void setEmail(Map<String, EmailExceptionNoticeProperty> email) {
+		this.email = email;
 	}
 
-	/* (non-Javadoc)
-	 * @see java.lang.Object#toString()
-	 */
 	@Override
 	public String toString() {
-		return "ExceptionNoticeProperty [filterTrace=" + filterTrace + ", projectName=" + projectName
-				+ ", enableCheckAnnotation=" + enableCheckAnnotation + ", enableRedisStorage=" + enableRedisStorage
-				+ ", redisKey=" + redisKey + ", expireTime=" + expireTime + ", noticeType=" + noticeType
-				+ ", excludeExceptions=" + excludeExceptions + "]";
+		return "ExceptionNoticeProperty [openNotice=" + openNotice + ", filterTrace=" + filterTrace + ", projectName="
+				+ projectName + ", enableCheckAnnotation=" + enableCheckAnnotation + ", enableRedisStorage="
+				+ enableRedisStorage + ", redisKey=" + redisKey + ", expireTime=" + expireTime + ", excludeExceptions="
+				+ excludeExceptions + ", dingding=" + dingding + ", email=" + email + "]";
 	}
-
-	
 
 }

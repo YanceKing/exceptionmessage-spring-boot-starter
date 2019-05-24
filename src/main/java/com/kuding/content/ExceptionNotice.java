@@ -2,6 +2,8 @@ package com.kuding.content;
 
 import static java.util.stream.Collectors.toList;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.List;
 
@@ -13,7 +15,6 @@ public class ExceptionNotice {
 	 * 工程名
 	 */
 	protected String project;
- 
 
 	/**
 	 * 异常的标识码
@@ -45,8 +46,33 @@ public class ExceptionNotice {
 	 */
 	protected List<String> traceInfo;
 
+	/**
+	 * 最后一次出现的时间
+	 */
+	protected LocalDateTime latestShowTime = LocalDateTime.now();
+
+	/**
+	 * 出现次数
+	 */
+	protected Long showCount = 1L;
+
 	public ExceptionNotice(Throwable ex, String filterTrace, Object[] args) {
 		this.exceptionMessage = gainExceptionMessage(ex);
+		this.parames = args == null ? null : Arrays.stream(args).collect(toList());
+		List<StackTraceElement> list = Arrays.stream(ex.getStackTrace())
+				.filter(x -> x.getClassName().startsWith(filterTrace))
+				.filter(x -> !x.getFileName().equals("<generated>")).collect(toList());
+		if (list.size() > 0) {
+			this.traceInfo = list.stream().map(x -> x.toString()).collect(toList());
+			this.methodName = list.get(0).getMethodName();
+			this.classPath = list.get(0).getClassName();
+		}
+		this.uid = calUid();
+	}
+
+	public ExceptionNotice(Throwable ex, String filterTrace, Long showCount, Object[] args) {
+		this.exceptionMessage = gainExceptionMessage(ex);
+		this.showCount = showCount;
 		this.parames = args == null ? null : Arrays.stream(args).collect(toList());
 		List<StackTraceElement> list = Arrays.stream(ex.getStackTrace())
 				.filter(x -> x.getClassName().startsWith(filterTrace))
@@ -67,7 +93,8 @@ public class ExceptionNotice {
 	}
 
 	private String calUid() {
-		String md5 = DigestUtils.md5DigestAsHex(String.format("%s-%s", exceptionMessage, traceInfo.get(0)).getBytes());
+		String md5 = DigestUtils.md5DigestAsHex(
+				String.format("%s-%s", exceptionMessage, traceInfo.size() > 0 ? traceInfo.get(0) : "").getBytes());
 		return md5;
 	}
 
@@ -82,6 +109,9 @@ public class ExceptionNotice {
 		}
 		stringBuilder.append("异常信息：").append(exceptionMessage).append("\r\n");
 		stringBuilder.append("异常追踪：").append("\r\n").append(String.join("\r\n", traceInfo)).append("\r\n");
+		stringBuilder.append("最后一次出现时间：")
+				.append(latestShowTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))).append("\r\n");
+		stringBuilder.append("出现次数：").append(showCount).append("\r\n");
 		return stringBuilder.toString();
 
 	}
@@ -99,7 +129,6 @@ public class ExceptionNotice {
 	public void setProject(String project) {
 		this.project = project;
 	}
-
 
 	/**
 	 * @return the methodName
@@ -185,17 +214,39 @@ public class ExceptionNotice {
 		this.uid = uid;
 	}
 
-	/* (non-Javadoc)
-	 * @see java.lang.Object#toString()
+	/**
+	 * @return the latestShowTime
 	 */
+	public LocalDateTime getLatestShowTime() {
+		return latestShowTime;
+	}
+
+	/**
+	 * @param latestShowTime the latestShowTime to set
+	 */
+	public void setLatestShowTime(LocalDateTime latestShowTime) {
+		this.latestShowTime = latestShowTime;
+	}
+
+	/**
+	 * @return the showCount
+	 */
+	public Long getShowCount() {
+		return showCount;
+	}
+
+	/**
+	 * @param showCount the showCount to set
+	 */
+	public void setShowCount(Long showCount) {
+		this.showCount = showCount;
+	}
+
 	@Override
 	public String toString() {
 		return "ExceptionNotice [project=" + project + ", uid=" + uid + ", methodName=" + methodName + ", parames="
 				+ parames + ", classPath=" + classPath + ", exceptionMessage=" + exceptionMessage + ", traceInfo="
-				+ traceInfo + "]";
+				+ traceInfo + ", latestShowTime=" + latestShowTime + ", showCount=" + showCount + "]";
 	}
-
-
-	
 
 }

@@ -6,7 +6,7 @@
 
 	<groupId>com.kuding</groupId>
 	<artifactId>prometheus-spring-boot-starter</artifactId>
-	<version>0.2</version>
+	<version>0.3-team</version>
 
 	<name>prometheus-spring-boot-starter</name>
 	<description>异常信息处理</description>
@@ -43,9 +43,8 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-redis</artifactId>
+			<optional>true</optional>
 		</dependency>
-
-		<!-- https://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient -->
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpclient</artifactId>
@@ -54,6 +53,7 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-mail</artifactId>
+			<optional>true</optional>
 		</dependency>
 	</dependencies>
 </project>

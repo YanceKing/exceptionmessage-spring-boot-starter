@@ -1,9 +1,11 @@
 package com.kuding.exceptionhandle;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.Collections;
-import java.util.HashSet;
+import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -12,6 +14,8 @@ import com.kuding.content.ExceptionNotice;
 import com.kuding.content.HttpExceptionNotice;
 import com.kuding.content.MultiTenantExceptionNotice;
 import com.kuding.message.INoticeSendComponent;
+import com.kuding.pojos.ExceptionStatistics;
+import com.kuding.properties.ExceptionNoticeFrequencyStrategy;
 import com.kuding.properties.ExceptionNoticeProperty;
 import com.kuding.redis.ExceptionRedisStorageComponent;
 
@@ -20,14 +24,19 @@ public class ExceptionHandler {
 
 	private ExceptionRedisStorageComponent exceptionRedisStorageComponent;
 
-	private INoticeSendComponent noticeSendComponent;
-
 	private ExceptionNoticeProperty exceptionNoticeProperty;
 
-	private Set<String> checkUid = Collections.synchronizedSet(new HashSet<>());
+	private ExceptionNoticeFrequencyStrategy exceptionNoticeFrequencyStrategy;
 
-	public ExceptionHandler(INoticeSendComponent noticeSendComponent, ExceptionNoticeProperty exceptionNoticeProperty) {
-		this.noticeSendComponent = noticeSendComponent;
+	private final Map<String, INoticeSendComponent> blameMap = new HashMap<>();
+
+	private final Map<String, ExceptionStatistics> checkUid = Collections.synchronizedMap(new HashMap<>());
+
+	public ExceptionHandler(ExceptionNoticeProperty exceptionNoticeProperty,
+			Collection<INoticeSendComponent> noticeSendComponents,
+			ExceptionNoticeFrequencyStrategy exceptionNoticeFrequencyStrategy) {
+		this.exceptionNoticeFrequencyStrategy = exceptionNoticeFrequencyStrategy;
+		noticeSendComponents.forEach(x -> x.getAllBuddies().forEach(y -> blameMap.putIfAbsent(y, x)));
 		this.exceptionNoticeProperty = exceptionNoticeProperty;
 	}
 
@@ -39,75 +48,129 @@ public class ExceptionHandler {
 		this.exceptionRedisStorageComponent = exceptionRedisStorageComponent;
 	}
 
-	public ExceptionNotice createNotice(RuntimeException exception) {
+	/**
+	 * 最基础的异常通知的创建方法
+	 * 
+	 * @param blamedFor 谁背锅？
+	 * @param exception 异常信息
+	 * 
+	 * @return
+	 */
+	public ExceptionNotice createNotice(String blamedFor, RuntimeException exception) {
 		if (exceptionNoticeProperty.getExcludeExceptions().contains(exception.getClass()))
 			return null;
 		ExceptionNotice exceptionNotice = new ExceptionNotice(exception, exceptionNoticeProperty.getFilterTrace(),
 				null);
 		exceptionNotice.setProject(exceptionNoticeProperty.getProjectName());
-		boolean noHas = redisStore(exceptionNotice);
+		boolean noHas = persist(exceptionNotice);
 		if (noHas)
-			messageSend(exceptionNotice);
+			messageSend(blamedFor, exceptionNotice);
 		return exceptionNotice;
 
 	}
 
-	public ExceptionNotice createNotice(Throwable ex, String method, Object[] args) {
+	/**
+	 * 反射的范式获取方法中出现的异常进行的通知
+	 * 
+	 * @param blamedFor 谁背锅？
+	 * @param ex        异常信息
+	 * @param method    方法名
+	 * @param args      参数信息
+	 * @return
+	 */
+	public ExceptionNotice createNotice(String blamedFor, Throwable ex, String method, Object[] args) {
 		if (exceptionNoticeProperty.getExcludeExceptions().contains(ex.getClass()))
 			return null;
 		ExceptionNotice exceptionNotice = new ExceptionNotice(ex, exceptionNoticeProperty.getFilterTrace(), args);
 		exceptionNotice.setProject(exceptionNoticeProperty.getProjectName());
-		boolean noHas = redisStore(exceptionNotice);
+		boolean noHas = persist(exceptionNotice);
 		if (noHas)
-			messageSend(exceptionNotice);
+			messageSend(blamedFor, exceptionNotice);
 		return exceptionNotice;
 
 	}
 
-	public HttpExceptionNotice createHttpNotice(RuntimeException exception, String url, Map<String, String> param,
-			String requesBody) {
+	/**
+	 * 
+	 * @param blamedFor
+	 * @param exception
+	 * @param url
+	 * @param param
+	 * @param requesBody
+	 * @param headers
+	 * @return
+	 */
+	public HttpExceptionNotice createHttpNotice(String blamedFor, RuntimeException exception, String url,
+			Map<String, String> param, String requesBody, Map<String, String> headers) {
 		if (exceptionNoticeProperty.getExcludeExceptions().contains(exception.getClass()))
 			return null;
 		HttpExceptionNotice exceptionNotice = new HttpExceptionNotice(exception,
-				exceptionNoticeProperty.getFilterTrace(), url, param, requesBody);
+				exceptionNoticeProperty.getFilterTrace(), url, param, requesBody, headers);
 		exceptionNotice.setProject(exceptionNoticeProperty.getProjectName());
-		boolean noHas = redisStore(exceptionNotice);
+		boolean noHas = persist(exceptionNotice);
 		if (noHas)
-			messageSend(exceptionNotice);
+			messageSend(blamedFor, exceptionNotice);
 		return exceptionNotice;
 	}
 
-	public MultiTenantExceptionNotice createHttpNotice(RuntimeException exception, String url,
-			Map<String, String> param, String requestBody, String tenantId) {
+	public MultiTenantExceptionNotice createHttpNotice(String blamedFor, RuntimeException exception, String url,
+			Map<String, String> param, String requestBody, Map<String, String> headers, String tenantId) {
 		if (exceptionNoticeProperty.getExcludeExceptions().contains(exception.getClass()))
 			return null;
 		MultiTenantExceptionNotice exceptionNotice = new MultiTenantExceptionNotice(exception,
-				exceptionNoticeProperty.getFilterTrace(), url, param, requestBody, tenantId);
+				exceptionNoticeProperty.getFilterTrace(), url, param, requestBody, headers, tenantId);
 		exceptionNotice.setProject(exceptionNoticeProperty.getProjectName());
-		boolean noHas = redisStore(exceptionNotice);
+		boolean noHas = persist(exceptionNotice);
 		if (noHas)
-			messageSend(exceptionNotice);
+			messageSend(blamedFor, exceptionNotice);
 		return exceptionNotice;
 	}
+	
+	
 
-	private boolean redisStore(ExceptionNotice exceptionNotice) {
-		if (exceptionRedisStorageComponent != null)
-			return exceptionRedisStorageComponent.save(exceptionNotice);
-		if (checkUid.contains(exceptionNotice.getUid()))
-			return false;
-		else {
-			checkUid.add(exceptionNotice.getUid());
-			return true;
+	private boolean persist(ExceptionNotice exceptionNotice) {
+		Boolean needNotice = false;
+		String uid = exceptionNotice.getUid();
+		ExceptionStatistics exceptionStatistics = checkUid.get(uid);
+		if (exceptionStatistics != null) {
+			Long count = exceptionStatistics.plusOne();
+			if (exceptionNoticeFrequencyStrategy.getEnabled()) {
+				if (stratergyCheck(exceptionStatistics, exceptionNoticeFrequencyStrategy)) {
+					exceptionNotice.setLatestShowTime(LocalDateTime.now());
+					exceptionNotice.setShowCount(count);
+					needNotice = true;
+				}
+			}
+		} else {
+			exceptionStatistics = new ExceptionStatistics(uid);
+			checkUid.put(uid, exceptionStatistics);
+			needNotice = true;
 		}
+		if (exceptionRedisStorageComponent != null)
+			exceptionRedisStorageComponent.save(exceptionNotice);
+		return needNotice;
 	}
 
-	private void messageSend(ExceptionNotice exceptionNotice) {
-		noticeSendComponent.send(exceptionNotice);
+	private boolean stratergyCheck(ExceptionStatistics exceptionStatistics,
+			ExceptionNoticeFrequencyStrategy exceptionNoticeFrequencyStrategy) {
+		switch (exceptionNoticeFrequencyStrategy.getFrequencyType()) {
+		case TIMEOUT:
+			Duration dur = Duration.between(exceptionStatistics.getNoticeTime(), LocalDateTime.now());
+			return exceptionNoticeFrequencyStrategy.getNoticeTimeInterval().compareTo(dur) < 0;
+		case SHOWCOUNT:
+			return exceptionStatistics.getShowCount().longValue() > exceptionNoticeFrequencyStrategy
+					.getNoticeShowCount().longValue();
+		}
+		return false;
+	}
+
+	private void messageSend(String blamedFor, ExceptionNotice exceptionNotice) {
+		INoticeSendComponent sendComponent = blameMap.get(blamedFor);
+		sendComponent.send(blamedFor, exceptionNotice);
 	}
 
 	@Scheduled(cron = "0 25 0 * * * ")
 	public void resetCheck() {
 		checkUid.clear();
 	}
-
 }
