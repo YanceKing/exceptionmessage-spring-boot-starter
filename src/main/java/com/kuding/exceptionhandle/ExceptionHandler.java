@@ -7,7 +7,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 
 import com.kuding.content.ExceptionNotice;
@@ -19,7 +18,6 @@ import com.kuding.properties.ExceptionNoticeFrequencyStrategy;
 import com.kuding.properties.ExceptionNoticeProperty;
 import com.kuding.redis.ExceptionRedisStorageComponent;
 
-@EnableScheduling
 public class ExceptionHandler {
 
 	private ExceptionRedisStorageComponent exceptionRedisStorageComponent;
@@ -46,6 +44,10 @@ public class ExceptionHandler {
 	 */
 	public void setExceptionRedisStorageComponent(ExceptionRedisStorageComponent exceptionRedisStorageComponent) {
 		this.exceptionRedisStorageComponent = exceptionRedisStorageComponent;
+	}
+
+	public void registerNoticeSendComponent(INoticeSendComponent component) {
+		component.getAllBuddies().forEach(x -> blameMap.putIfAbsent(x, component));
 	}
 
 	/**
@@ -91,6 +93,7 @@ public class ExceptionHandler {
 	}
 
 	/**
+	 * 创建一个http请求异常的通知
 	 * 
 	 * @param blamedFor
 	 * @param exception
@@ -125,8 +128,6 @@ public class ExceptionHandler {
 			messageSend(blamedFor, exceptionNotice);
 		return exceptionNotice;
 	}
-	
-	
 
 	private boolean persist(ExceptionNotice exceptionNotice) {
 		Boolean needNotice = false;
@@ -138,6 +139,7 @@ public class ExceptionHandler {
 				if (stratergyCheck(exceptionStatistics, exceptionNoticeFrequencyStrategy)) {
 					exceptionNotice.setLatestShowTime(LocalDateTime.now());
 					exceptionNotice.setShowCount(count);
+					exceptionStatistics.setLastShowedCount(count);
 					needNotice = true;
 				}
 			}
@@ -158,8 +160,8 @@ public class ExceptionHandler {
 			Duration dur = Duration.between(exceptionStatistics.getNoticeTime(), LocalDateTime.now());
 			return exceptionNoticeFrequencyStrategy.getNoticeTimeInterval().compareTo(dur) < 0;
 		case SHOWCOUNT:
-			return exceptionStatistics.getShowCount().longValue() > exceptionNoticeFrequencyStrategy
-					.getNoticeShowCount().longValue();
+			return exceptionStatistics.getShowCount().longValue() - exceptionStatistics.getLastShowedCount()
+					.longValue() > exceptionNoticeFrequencyStrategy.getNoticeShowCount().longValue();
 		}
 		return false;
 	}

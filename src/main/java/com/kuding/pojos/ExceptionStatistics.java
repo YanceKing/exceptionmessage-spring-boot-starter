@@ -20,8 +20,14 @@ public class ExceptionStatistics {
 	 */
 	private LocalDateTime noticeTime;
 
+	/**
+	 * 上一次通知时的次数
+	 */
+	private Long LastShowedCount;
+
 	public ExceptionStatistics(String uid) {
 		this.showCount = new AtomicLong(1);
+		this.LastShowedCount = 1L;
 		this.uid = uid;
 		this.noticeTime = LocalDateTime.now();
 	}
@@ -73,6 +79,14 @@ public class ExceptionStatistics {
 	 */
 	public void setNoticeTime(LocalDateTime noticeTime) {
 		this.noticeTime = noticeTime;
+	}
+
+	public Long getLastShowedCount() {
+		return LastShowedCount;
+	}
+
+	public void setLastShowedCount(Long lastShowedCount) {
+		LastShowedCount = lastShowedCount;
 	}
 
 	@Override
