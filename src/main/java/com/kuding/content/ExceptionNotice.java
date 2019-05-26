@@ -2,6 +2,7 @@ package com.kuding.content;
 
 import static java.util.stream.Collectors.toList;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -13,7 +14,6 @@ public class ExceptionNotice {
 	 * 工程名
 	 */
 	protected String project;
- 
 
 	/**
 	 * 异常的标识码
@@ -43,14 +43,14 @@ public class ExceptionNotice {
 	/**
 	 * 异常追踪信息
 	 */
-	protected List<String> traceInfo;
+	protected List<String> traceInfo = new ArrayList<>();
 
 	public ExceptionNotice(Throwable ex, String filterTrace, Object[] args) {
 		this.exceptionMessage = gainExceptionMessage(ex);
 		this.parames = args == null ? null : Arrays.stream(args).collect(toList());
-		List<StackTraceElement> list = Arrays.stream(ex.getStackTrace())
-				.filter(x -> x.getClassName().startsWith(filterTrace))
-				.filter(x -> !x.getFileName().equals("<generated>")).collect(toList());
+		List<StackTraceElement> list = filterTrace == null ? new ArrayList<>()
+				: Arrays.stream(ex.getStackTrace()).filter(x -> x.getClassName().startsWith(filterTrace))
+						.filter(x -> !x.getFileName().equals("<generated>")).collect(toList());
 		if (list.size() > 0) {
 			this.traceInfo = list.stream().map(x -> x.toString()).collect(toList());
 			this.methodName = list.get(0).getMethodName();
@@ -67,7 +67,8 @@ public class ExceptionNotice {
 	}
 
 	private String calUid() {
-		String md5 = DigestUtils.md5DigestAsHex(String.format("%s-%s", exceptionMessage, traceInfo.get(0)).getBytes());
+		String md5 = DigestUtils.md5DigestAsHex(String.format("%s-%s", exceptionMessage,
+				traceInfo == null || traceInfo.size() == 0 ? methodName : traceInfo.get(0)).getBytes());
 		return md5;
 	}
 
@@ -99,7 +100,6 @@ public class ExceptionNotice {
 	public void setProject(String project) {
 		this.project = project;
 	}
-
 
 	/**
 	 * @return the methodName
@@ -185,7 +185,9 @@ public class ExceptionNotice {
 		this.uid = uid;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
@@ -194,8 +196,5 @@ public class ExceptionNotice {
 				+ parames + ", classPath=" + classPath + ", exceptionMessage=" + exceptionMessage + ", traceInfo="
 				+ traceInfo + "]";
 	}
-
-
-	
 
 }
