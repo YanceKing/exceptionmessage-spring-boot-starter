@@ -116,6 +116,18 @@ public class ExceptionHandler {
 		return exceptionNotice;
 	}
 
+	/**
+	 * 多租户中处理背锅信息
+	 * 
+	 * @param blamedFor
+	 * @param exception
+	 * @param url
+	 * @param param
+	 * @param requestBody
+	 * @param headers
+	 * @param tenantId
+	 * @return
+	 */
 	public MultiTenantExceptionNotice createHttpNotice(String blamedFor, RuntimeException exception, String url,
 			Map<String, String> param, String requestBody, Map<String, String> headers, String tenantId) {
 		if (exceptionNoticeProperty.getExcludeExceptions().contains(exception.getClass()))
