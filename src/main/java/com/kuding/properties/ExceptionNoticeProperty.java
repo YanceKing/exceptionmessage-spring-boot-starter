@@ -151,19 +151,6 @@ public class ExceptionNoticeProperty {
 		this.redisKey = redisKey;
 	}
 
-	/**
-	 * @return the expireTime
-	 */
-	public long getExpireTime() {
-		return expireTime;
-	}
-
-	/**
-	 * @param expireTime the expireTime to set
-	 */
-	public void setExpireTime(long expireTime) {
-		this.expireTime = expireTime;
-	}
 
 	/**
 	 * @return the excludeExceptions
@@ -225,9 +212,11 @@ public class ExceptionNoticeProperty {
 	public String toString() {
 		return "ExceptionNoticeProperty [openNotice=" + openNotice + ", includedTracePackage=" + includedTracePackage
 				+ ", projectName=" + projectName + ", listenType=" + listenType + ", enableRedisStorage="
-				+ enableRedisStorage + ", redisKey=" + redisKey + ", expireTime=" + expireTime + ", excludeExceptions="
-				+ excludeExceptions + ", includeHeaderName=" + includeHeaderName + ", dingding=" + dingding + ", email="
-				+ email + "]";
+				+ enableRedisStorage + ", redisKey=" + redisKey + ", excludeExceptions=" + excludeExceptions
+				+ ", includeHeaderName=" + includeHeaderName + ", dingding=" + dingding + ", email=" + email + "]";
 	}
+
+
+	
 
 }
