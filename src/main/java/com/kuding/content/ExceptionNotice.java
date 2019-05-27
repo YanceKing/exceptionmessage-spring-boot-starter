@@ -60,7 +60,7 @@ public class ExceptionNotice {
 		this.exceptionMessage = gainExceptionMessage(ex);
 		this.parames = args == null ? null : Arrays.stream(args).collect(toList());
 		List<StackTraceElement> list = Arrays.stream(ex.getStackTrace())
-				.filter(x -> x.getClassName().startsWith(filterTrace))
+				.filter(x -> filterTrace == null ? true : x.getClassName().startsWith(filterTrace))
 				.filter(x -> !x.getFileName().equals("<generated>")).collect(toList());
 		if (list.size() > 0) {
 			this.traceInfo = list.stream().map(x -> x.toString()).collect(toList());
@@ -75,7 +75,7 @@ public class ExceptionNotice {
 		this.showCount = showCount;
 		this.parames = args == null ? null : Arrays.stream(args).collect(toList());
 		List<StackTraceElement> list = Arrays.stream(ex.getStackTrace())
-				.filter(x -> x.getClassName().startsWith(filterTrace))
+				.filter(x -> filterTrace == null ? true : x.getClassName().startsWith(filterTrace))
 				.filter(x -> !x.getFileName().equals("<generated>")).collect(toList());
 		if (list.size() > 0) {
 			this.traceInfo = list.stream().map(x -> x.toString()).collect(toList());

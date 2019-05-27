@@ -1,10 +1,10 @@
 package com.kuding.web;
 
-import javax.servlet.http.HttpServletRequest;
+import org.springframework.web.servlet.mvc.method.annotation.RequestBodyAdvice;
 
-public interface CurrentRequetBodyResolver {
+public interface CurrentRequetBodyResolver extends RequestBodyAdvice {
 
-	default String getRequestBody(HttpServletRequest request) {
+	default String getRequestBody() {
 		return "";
 	}
 }

@@ -25,7 +25,7 @@ import com.kuding.properties.ExceptionNoticeProperty;
 @Configuration
 @EnableConfigurationProperties({ ExceptionNoticeProperty.class, ExceptionNoticeFrequencyStrategy.class })
 @ConditionalOnMissingBean({ ExceptionHandler.class })
-@ConditionalOnProperty(name = "exceptionnotice.open-notice", havingValue = "true")
+@ConditionalOnProperty(name = "exceptionnotice.open-notice", havingValue = "true", matchIfMissing = true)
 @EnableScheduling
 public class ExceptionNoticeConfig {
 
@@ -42,7 +42,7 @@ public class ExceptionNoticeConfig {
 	private Gson gson;
 
 	@Bean
-	@ConditionalOnProperty(name = "exceptionnotice.listen-type", havingValue = "aop", matchIfMissing = true)
+	@ConditionalOnProperty(name = "exceptionnotice.listen-type", havingValue = "common", matchIfMissing = true)
 	@ConditionalOnMissingBean(ExceptionNoticeAop.class)
 	public ExceptionNoticeAop exceptionNoticeAop(ExceptionHandler exceptionHandler) {
 		ExceptionNoticeAop aop = new ExceptionNoticeAop(exceptionHandler);

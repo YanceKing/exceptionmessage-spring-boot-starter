@@ -6,6 +6,7 @@ import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.mail.MailProperties;
 import org.springframework.boot.autoconfigure.mail.MailSenderAutoConfiguration;
@@ -19,7 +20,8 @@ import com.kuding.properties.ExceptionNoticeProperty;
 
 @Configuration
 @ConditionalOnClass({ MailSender.class, MailProperties.class })
-@AutoConfigureAfter({ MailSenderAutoConfiguration.class })
+@AutoConfigureAfter({ MailSenderAutoConfiguration.class, ExceptionNoticeConfig.class })
+@ConditionalOnBean({ ExceptionHandler.class })
 public class ExceptionNoticeEmailConfig {
 
 	@Autowired

@@ -16,10 +16,13 @@ import org.springframework.web.servlet.ModelAndView;
 import com.kuding.anno.ExceptionListener;
 import com.kuding.content.HttpExceptionNotice;
 import com.kuding.exceptionhandle.ExceptionHandler;
+import com.kuding.properties.ExceptionNoticeProperty;
 
 public class ExceptionNoticeResolver implements HandlerExceptionResolver {
 
 	private ExceptionHandler exceptionHandler;
+
+	private ExceptionNoticeProperty exceptionNoticeProperty;
 
 	private CurrentRequetBodyResolver currentRequetBodyResolver;
 
@@ -29,10 +32,12 @@ public class ExceptionNoticeResolver implements HandlerExceptionResolver {
 
 	public ExceptionNoticeResolver(ExceptionHandler exceptionHandler,
 			CurrentRequetBodyResolver currentRequetBodyResolver,
-			CurrentRequestHeaderResolver currentRequestHeaderResolver) {
+			CurrentRequestHeaderResolver currentRequestHeaderResolver,
+			ExceptionNoticeProperty exceptionNoticeProperty) {
 		this.exceptionHandler = exceptionHandler;
 		this.currentRequestHeaderResolver = currentRequestHeaderResolver;
 		this.currentRequetBodyResolver = currentRequetBodyResolver;
+		this.exceptionNoticeProperty = exceptionNoticeProperty;
 	}
 
 	public ExceptionHandler getExceptionHandler() {
@@ -54,8 +59,8 @@ public class ExceptionNoticeResolver implements HandlerExceptionResolver {
 			handlerMethod = (HandlerMethod) handler;
 		ExceptionListener listener = getListener(handlerMethod);
 		if (listener != null && e != null && handler != null) {
-			HttpExceptionNotice exceptionNotice = exceptionHandler.createHttpNotice(listener.blamedFor(), e,
-					request.getRequestURI(), getParames(request), getRequestBody(request), getHeader(request));
+			HttpExceptionNotice exceptionNotice = exceptionHandler.createHttpNotice(listener.value(), e,
+					request.getRequestURI(), getParames(request), getRequestBody(), getHeader(request));
 			logger.debug(exceptionNotice);
 		}
 		return null;
@@ -67,12 +72,12 @@ public class ExceptionNoticeResolver implements HandlerExceptionResolver {
 		return map;
 	}
 
-	private String getRequestBody(HttpServletRequest request) {
-		return currentRequetBodyResolver.getRequestBody(request);
+	private String getRequestBody() {
+		return currentRequetBodyResolver.getRequestBody();
 	}
 
 	private Map<String, String> getHeader(HttpServletRequest request) {
-		return currentRequestHeaderResolver.headers(request);
+		return currentRequestHeaderResolver.headers(request, exceptionNoticeProperty.getIncludeHeaderName());
 	}
 
 	private ExceptionListener getListener(HandlerMethod handlerMethod) {

@@ -61,8 +61,8 @@ public class ExceptionHandler {
 	public ExceptionNotice createNotice(String blamedFor, RuntimeException exception) {
 		if (exceptionNoticeProperty.getExcludeExceptions().contains(exception.getClass()))
 			return null;
-		ExceptionNotice exceptionNotice = new ExceptionNotice(exception, exceptionNoticeProperty.getFilterTrace(),
-				null);
+		ExceptionNotice exceptionNotice = new ExceptionNotice(exception,
+				exceptionNoticeProperty.getIncludedTracePackage(), null);
 		exceptionNotice.setProject(exceptionNoticeProperty.getProjectName());
 		boolean noHas = persist(exceptionNotice);
 		if (noHas)
@@ -72,7 +72,7 @@ public class ExceptionHandler {
 	}
 
 	/**
-	 * 反射的范式获取方法中出现的异常进行的通知
+	 * 反射方式获取方法中出现的异常进行的通知
 	 * 
 	 * @param blamedFor 谁背锅？
 	 * @param ex        异常信息
@@ -83,7 +83,8 @@ public class ExceptionHandler {
 	public ExceptionNotice createNotice(String blamedFor, Throwable ex, String method, Object[] args) {
 		if (exceptionNoticeProperty.getExcludeExceptions().contains(ex.getClass()))
 			return null;
-		ExceptionNotice exceptionNotice = new ExceptionNotice(ex, exceptionNoticeProperty.getFilterTrace(), args);
+		ExceptionNotice exceptionNotice = new ExceptionNotice(ex, exceptionNoticeProperty.getIncludedTracePackage(),
+				args);
 		exceptionNotice.setProject(exceptionNoticeProperty.getProjectName());
 		boolean noHas = persist(exceptionNotice);
 		if (noHas)
@@ -108,7 +109,7 @@ public class ExceptionHandler {
 		if (exceptionNoticeProperty.getExcludeExceptions().contains(exception.getClass()))
 			return null;
 		HttpExceptionNotice exceptionNotice = new HttpExceptionNotice(exception,
-				exceptionNoticeProperty.getFilterTrace(), url, param, requesBody, headers);
+				exceptionNoticeProperty.getIncludedTracePackage(), url, param, requesBody, headers);
 		exceptionNotice.setProject(exceptionNoticeProperty.getProjectName());
 		boolean noHas = persist(exceptionNotice);
 		if (noHas)
@@ -133,7 +134,7 @@ public class ExceptionHandler {
 		if (exceptionNoticeProperty.getExcludeExceptions().contains(exception.getClass()))
 			return null;
 		MultiTenantExceptionNotice exceptionNotice = new MultiTenantExceptionNotice(exception,
-				exceptionNoticeProperty.getFilterTrace(), url, param, requestBody, headers, tenantId);
+				exceptionNoticeProperty.getIncludedTracePackage(), url, param, requestBody, headers, tenantId);
 		exceptionNotice.setProject(exceptionNoticeProperty.getProjectName());
 		boolean noHas = persist(exceptionNotice);
 		if (noHas)

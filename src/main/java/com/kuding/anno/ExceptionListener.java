@@ -11,6 +11,10 @@ import java.lang.annotation.Target;
 @Target({ ElementType.METHOD, ElementType.TYPE })
 public @interface ExceptionListener {
 
-	String blamedFor() default "";
+	/**
+	 * 出错了找谁？？？
+	 * @return
+	 */
+	String value() default "";
 
 }

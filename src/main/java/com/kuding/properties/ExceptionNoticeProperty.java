@@ -1,9 +1,11 @@
 package com.kuding.properties;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 import com.kuding.properties.enums.ListenType;
@@ -17,19 +19,28 @@ public class ExceptionNoticeProperty {
 	private Boolean openNotice;
 
 	/**
-	 * 过滤信息的关键字
+	 * 追踪信息的包含的包名
 	 */
-	private String filterTrace;
+	private String includedTracePackage;
 
 	/**
 	 * 异常工程名
 	 */
+	@Value("${spring.application.name:${exceptionnotice.project-name:无名工程}}")
 	private String projectName;
 
 	/**
-	 * 通过注解进行监控
+	 * <p>
+	 * 通过注解进行监控，目前提供两种方式：
+	 * </p>
+	 * <ol>
+	 * 一种只是普通的监视方法中的异常，主要包含了方法名、方法参数等相关内容；
+	 * </ol>
+	 * <ol>
+	 * 另一种是监视请求出现异常后的通知，额外包含了请求路径、请求参数（param、body）以及想要查询的头信息，对于头信息的过滤参看
+	 * </ol>
 	 */
-	private ListenType listenType = ListenType.AOP;
+	private ListenType listenType = ListenType.COMMON;
 
 	/**
 	 * 开启redis存储
@@ -39,17 +50,18 @@ public class ExceptionNoticeProperty {
 	/**
 	 * redis的键
 	 */
-	private String redisKey;
+	private String redisKey = "prometheus-notice";
 
-	/**
-	 * 保留时间（小时），此字段暂时没用，开发中
-	 */
-	private long expireTime;
 
 	/**
 	 * 排除的需要统计的异常
 	 */
 	private List<Class<? extends RuntimeException>> excludeExceptions = new LinkedList<>();
+
+	/**
+	 * 当listenType为WEB_MVC时，处理请求异常通知时需要的header名称信息
+	 */
+	private List<String> includeHeaderName = new ArrayList<String>();
 
 	/**
 	 * 发送钉钉异常通知给谁
@@ -76,17 +88,17 @@ public class ExceptionNoticeProperty {
 	}
 
 	/**
-	 * @return the filterTrace
+	 * @return the includedTracePackage
 	 */
-	public String getFilterTrace() {
-		return filterTrace;
+	public String getIncludedTracePackage() {
+		return includedTracePackage;
 	}
 
 	/**
-	 * @param filterTrace the filterTrace to set
+	 * @param includedTracePackage the includedTracePackage to set
 	 */
-	public void setFilterTrace(String filterTrace) {
-		this.filterTrace = filterTrace;
+	public void setIncludedTracePackage(String includedTracePackage) {
+		this.includedTracePackage = includedTracePackage;
 	}
 
 	/**
@@ -195,12 +207,27 @@ public class ExceptionNoticeProperty {
 		this.email = email;
 	}
 
+	/**
+	 * @return the includeHeaderName
+	 */
+	public List<String> getIncludeHeaderName() {
+		return includeHeaderName;
+	}
+
+	/**
+	 * @param includeHeaderName the includeHeaderName to set
+	 */
+	public void setIncludeHeaderName(List<String> includeHeaderName) {
+		this.includeHeaderName = includeHeaderName;
+	}
+
 	@Override
 	public String toString() {
-		return "ExceptionNoticeProperty [openNotice=" + openNotice + ", filterTrace=" + filterTrace + ", projectName="
-				+ projectName + ", listenType=" + listenType + ", enableRedisStorage=" + enableRedisStorage
-				+ ", redisKey=" + redisKey + ", expireTime=" + expireTime + ", excludeExceptions=" + excludeExceptions
-				+ ", dingding=" + dingding + ", email=" + email + "]";
+		return "ExceptionNoticeProperty [openNotice=" + openNotice + ", includedTracePackage=" + includedTracePackage
+				+ ", projectName=" + projectName + ", listenType=" + listenType + ", enableRedisStorage="
+				+ enableRedisStorage + ", redisKey=" + redisKey + ", expireTime=" + expireTime + ", excludeExceptions="
+				+ excludeExceptions + ", includeHeaderName=" + includeHeaderName + ", dingding=" + dingding + ", email="
+				+ email + "]";
 	}
 
 }

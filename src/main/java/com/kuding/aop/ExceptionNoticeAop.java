@@ -24,12 +24,12 @@ public class ExceptionNoticeAop {
 
 	@AfterThrowing(value = "@within(listener)", throwing = "e", argNames = "listener,e")
 	public void exceptionNotice(JoinPoint joinPoint, ExceptionListener listener, RuntimeException e) {
-		handleException(listener.blamedFor(), e, joinPoint.getSignature().getName(), joinPoint.getArgs());
+		handleException(listener.value(), e, joinPoint.getSignature().getName(), joinPoint.getArgs());
 	}
 
 	@AfterThrowing(value = "@annotation(listener)", throwing = "e", argNames = "listener,e")
 	public void exceptionNoticeWithMethod(JoinPoint joinPoint, ExceptionListener listener, RuntimeException e) {
-		handleException(listener.blamedFor(), e, joinPoint.getSignature().getName(), joinPoint.getArgs());
+		handleException(listener.value(), e, joinPoint.getSignature().getName(), joinPoint.getArgs());
 	}
 
 	private void handleException(String blameFor, RuntimeException exception, String methodName, Object[] args) {
