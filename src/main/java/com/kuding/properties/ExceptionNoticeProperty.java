@@ -6,6 +6,8 @@ import java.util.Map;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
+import com.kuding.properties.enums.ListenType;
+
 @ConfigurationProperties(prefix = "exceptionnotice")
 public class ExceptionNoticeProperty {
 
@@ -27,7 +29,7 @@ public class ExceptionNoticeProperty {
 	/**
 	 * 通过注解进行监控
 	 */
-	private boolean enableCheckAnnotation = true;
+	private ListenType listenType = ListenType.AOP;
 
 	/**
 	 * 开启redis存储
@@ -101,18 +103,12 @@ public class ExceptionNoticeProperty {
 		this.projectName = projectName;
 	}
 
-	/**
-	 * @return the enableCheckAnnotation
-	 */
-	public boolean isEnableCheckAnnotation() {
-		return enableCheckAnnotation;
+	public ListenType getListenType() {
+		return listenType;
 	}
 
-	/**
-	 * @param enableCheckAnnotation the enableCheckAnnotation to set
-	 */
-	public void setEnableCheckAnnotation(boolean enableCheckAnnotation) {
-		this.enableCheckAnnotation = enableCheckAnnotation;
+	public void setListenType(ListenType listenType) {
+		this.listenType = listenType;
 	}
 
 	/**
@@ -202,9 +198,9 @@ public class ExceptionNoticeProperty {
 	@Override
 	public String toString() {
 		return "ExceptionNoticeProperty [openNotice=" + openNotice + ", filterTrace=" + filterTrace + ", projectName="
-				+ projectName + ", enableCheckAnnotation=" + enableCheckAnnotation + ", enableRedisStorage="
-				+ enableRedisStorage + ", redisKey=" + redisKey + ", expireTime=" + expireTime + ", excludeExceptions="
-				+ excludeExceptions + ", dingding=" + dingding + ", email=" + email + "]";
+				+ projectName + ", listenType=" + listenType + ", enableRedisStorage=" + enableRedisStorage
+				+ ", redisKey=" + redisKey + ", expireTime=" + expireTime + ", excludeExceptions=" + excludeExceptions
+				+ ", dingding=" + dingding + ", email=" + email + "]";
 	}
 
 }

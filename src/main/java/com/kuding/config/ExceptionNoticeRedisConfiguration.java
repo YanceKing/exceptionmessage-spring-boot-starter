@@ -25,7 +25,6 @@ public class ExceptionNoticeRedisConfiguration {
 	private ExceptionNoticeProperty exceptionNoticeProperty;
 
 	@Bean
-
 	public ExceptionRedisStorageComponent exceptionRedisStorageComponent(StringRedisTemplate stringRedisTemplate,
 			Gson gson, ExceptionHandler exceptionHandler) {
 		ExceptionRedisStorageComponent exceptionRedisStorageComponent = new ExceptionRedisStorageComponent(

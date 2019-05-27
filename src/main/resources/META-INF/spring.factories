@@ -1,4 +1,5 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
 com.kuding.config.ExceptionNoticeConfig,\
 com.kuding.config.ExceptionNoticeEmailConfig,\
-com.kuding.config.ExceptionNoticeRedisConfiguration
+com.kuding.config.ExceptionNoticeRedisConfiguration,\
+com.kuding.config.ExceptionNoticeInterceptorListenConfig

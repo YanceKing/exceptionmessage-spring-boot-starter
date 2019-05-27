@@ -94,7 +94,7 @@ public class HttpExceptionNotice extends ExceptionNotice {
 		if (paramInfo != null && paramInfo.size() > 0) {
 			stringBuilder.append("接口参数：").append("\r\n")
 					.append(String.join("\r\r", paramInfo.entrySet().stream()
-							.map(x -> String.format("%s:%s", x.getKey(), x.getValue())).collect(toList())))
+							.map(x -> String.format("%s::%s", x.getKey(), x.getValue())).collect(toList())))
 					.append("\r\n");
 		}
 		if (requestBody != null) {
@@ -102,13 +102,16 @@ public class HttpExceptionNotice extends ExceptionNotice {
 		}
 		if (headers != null && headers.size() > 0) {
 			stringBuilder.append("请求头：").append("\r\n");
-			headers.forEach((x, y) -> String.format("%s:%s\r\n", x, y));
+			stringBuilder.append(String.join(",\t", headers.entrySet().stream()
+					.map(x -> String.format("%s::%s", x.getKey(), x.getValue())).collect(toList())));
+			stringBuilder.append("\r\n");
 		}
 		stringBuilder.append("类路径：").append(classPath).append("\r\n");
 		stringBuilder.append("方法名：").append(methodName).append("\r\n");
 		if (parames != null && parames.size() > 0) {
 			stringBuilder.append("参数信息：")
-					.append(String.join(",", parames.stream().map(x -> x.toString()).collect(toList()))).append("\r\n");
+					.append(String.join("\t,\t", parames.stream().map(x -> x.toString()).collect(toList())))
+					.append("\r\n");
 		}
 		stringBuilder.append("异常信息：").append(exceptionMessage).append("\r\n");
 		stringBuilder.append("异常追踪：").append("\r\n").append(String.join("\r\n", traceInfo)).append("\r\n");

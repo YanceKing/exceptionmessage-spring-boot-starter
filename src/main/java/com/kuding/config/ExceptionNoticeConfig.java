@@ -42,7 +42,7 @@ public class ExceptionNoticeConfig {
 	private Gson gson;
 
 	@Bean
-	@ConditionalOnProperty(name = "exceptionnotice.enable-check-annotation", havingValue = "true", matchIfMissing = true)
+	@ConditionalOnProperty(name = "exceptionnotice.listen-type", havingValue = "aop", matchIfMissing = true)
 	@ConditionalOnMissingBean(ExceptionNoticeAop.class)
 	public ExceptionNoticeAop exceptionNoticeAop(ExceptionHandler exceptionHandler) {
 		ExceptionNoticeAop aop = new ExceptionNoticeAop(exceptionHandler);
