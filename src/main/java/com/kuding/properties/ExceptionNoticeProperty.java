@@ -52,7 +52,6 @@ public class ExceptionNoticeProperty {
 	 */
 	private String redisKey = "prometheus-notice";
 
-
 	/**
 	 * 排除的需要统计的异常
 	 */
@@ -72,6 +71,11 @@ public class ExceptionNoticeProperty {
 	 * 发送邮件异常通知给谁
 	 */
 	Map<String, EmailExceptionNoticeProperty> email;
+
+	/**
+	 * 默认通知人，当异常通知找不到背锅侠时，就用默认背锅侠
+	 */
+	private String defaultNotice;
 
 	/**
 	 * @return the openNotice
@@ -151,7 +155,6 @@ public class ExceptionNoticeProperty {
 		this.redisKey = redisKey;
 	}
 
-
 	/**
 	 * @return the excludeExceptions
 	 */
@@ -208,15 +211,27 @@ public class ExceptionNoticeProperty {
 		this.includeHeaderName = includeHeaderName;
 	}
 
+	/**
+	 * @return the defaultNotice
+	 */
+	public String getDefaultNotice() {
+		return defaultNotice;
+	}
+
+	/**
+	 * @param defaultNotice the defaultNotice to set
+	 */
+	public void setDefaultNotice(String defaultNotice) {
+		this.defaultNotice = defaultNotice;
+	}
+
 	@Override
 	public String toString() {
 		return "ExceptionNoticeProperty [openNotice=" + openNotice + ", includedTracePackage=" + includedTracePackage
 				+ ", projectName=" + projectName + ", listenType=" + listenType + ", enableRedisStorage="
 				+ enableRedisStorage + ", redisKey=" + redisKey + ", excludeExceptions=" + excludeExceptions
-				+ ", includeHeaderName=" + includeHeaderName + ", dingding=" + dingding + ", email=" + email + "]";
+				+ ", includeHeaderName=" + includeHeaderName + ", dingding=" + dingding + ", email=" + email
+				+ ", defaultNotice=" + defaultNotice + "]";
 	}
-
-
-	
 
 }

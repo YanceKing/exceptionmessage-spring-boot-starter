@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.util.StringUtils;
 
 import com.kuding.content.ExceptionNotice;
 import com.kuding.content.HttpExceptionNotice;
@@ -59,6 +60,7 @@ public class ExceptionHandler {
 	 * @return
 	 */
 	public ExceptionNotice createNotice(String blamedFor, RuntimeException exception) {
+		blamedFor = checkBlameFor(blamedFor);
 		if (exceptionNoticeProperty.getExcludeExceptions().contains(exception.getClass()))
 			return null;
 		ExceptionNotice exceptionNotice = new ExceptionNotice(exception,
@@ -81,6 +83,7 @@ public class ExceptionHandler {
 	 * @return
 	 */
 	public ExceptionNotice createNotice(String blamedFor, Throwable ex, String method, Object[] args) {
+		blamedFor = checkBlameFor(blamedFor);
 		if (exceptionNoticeProperty.getExcludeExceptions().contains(ex.getClass()))
 			return null;
 		ExceptionNotice exceptionNotice = new ExceptionNotice(ex, exceptionNoticeProperty.getIncludedTracePackage(),
@@ -106,6 +109,7 @@ public class ExceptionHandler {
 	 */
 	public HttpExceptionNotice createHttpNotice(String blamedFor, RuntimeException exception, String url,
 			Map<String, String> param, String requesBody, Map<String, String> headers) {
+		blamedFor = checkBlameFor(blamedFor);
 		if (exceptionNoticeProperty.getExcludeExceptions().contains(exception.getClass()))
 			return null;
 		HttpExceptionNotice exceptionNotice = new HttpExceptionNotice(exception,
@@ -131,6 +135,7 @@ public class ExceptionHandler {
 	 */
 	public MultiTenantExceptionNotice createHttpNotice(String blamedFor, RuntimeException exception, String url,
 			Map<String, String> param, String requestBody, Map<String, String> headers, String tenantId) {
+		blamedFor = checkBlameFor(blamedFor);
 		if (exceptionNoticeProperty.getExcludeExceptions().contains(exception.getClass()))
 			return null;
 		MultiTenantExceptionNotice exceptionNotice = new MultiTenantExceptionNotice(exception,
@@ -150,9 +155,11 @@ public class ExceptionHandler {
 			Long count = exceptionStatistics.plusOne();
 			if (exceptionNoticeFrequencyStrategy.getEnabled()) {
 				if (stratergyCheck(exceptionStatistics, exceptionNoticeFrequencyStrategy)) {
-					exceptionNotice.setLatestShowTime(LocalDateTime.now());
+					LocalDateTime now = LocalDateTime.now();
+					exceptionNotice.setLatestShowTime(now);
 					exceptionNotice.setShowCount(count);
 					exceptionStatistics.setLastShowedCount(count);
+					exceptionStatistics.setNoticeTime(now);
 					needNotice = true;
 				}
 			}
@@ -164,6 +171,13 @@ public class ExceptionHandler {
 		if (exceptionRedisStorageComponent != null)
 			exceptionRedisStorageComponent.save(exceptionNotice);
 		return needNotice;
+	}
+
+	private String checkBlameFor(String blameFor) {
+		blameFor = StringUtils.isEmpty(blameFor) || (!blameMap.containsKey(blameFor))
+				? exceptionNoticeProperty.getDefaultNotice()
+				: blameFor;
+		return blameFor;
 	}
 
 	private boolean stratergyCheck(ExceptionStatistics exceptionStatistics,

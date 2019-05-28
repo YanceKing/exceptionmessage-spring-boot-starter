@@ -6,7 +6,7 @@
 
 	<groupId>com.kuding</groupId>
 	<artifactId>prometheus-spring-boot-starter</artifactId>
-	<version>0.3-team</version>
+	<version>0.3.1-team</version>
 
 	<name>prometheus-spring-boot-starter</name>
 	<description>异常信息处理</description>
@@ -27,7 +27,6 @@
 
 
 	<dependencies>
-
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-configuration-processor</artifactId>
@@ -67,4 +66,17 @@
 			<optional>true</optional>
 		</dependency>
 	</dependencies>
+	
+	<distributionManagement>
+		<repository>
+			<id>deploy</id>
+			<name>private-framework-repo</name>
+			<url>http://repo.codef.top/repository/maven-releases/</url>
+		</repository>
+		<snapshotRepository>
+			<id>deploy</id>
+			<name>public-framework-repo</name>
+			<url>http://repo.codef.top/repository/maven-snapshots/</url>
+		</snapshotRepository>
+	</distributionManagement>
 </project>
