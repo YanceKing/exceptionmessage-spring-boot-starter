@@ -10,6 +10,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.mail.MailProperties;
 import org.springframework.boot.autoconfigure.mail.MailSenderAutoConfiguration;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.mail.MailSender;
 
@@ -19,9 +20,8 @@ import com.kuding.properties.EmailExceptionNoticeProperty;
 import com.kuding.properties.ExceptionNoticeProperty;
 
 @Configuration
-@ConditionalOnClass({ MailSender.class, MailProperties.class })
 @AutoConfigureAfter({ MailSenderAutoConfiguration.class, ExceptionNoticeConfig.class })
-@ConditionalOnBean({ ExceptionHandler.class })
+@ConditionalOnBean({ MailSender.class, MailProperties.class })
 public class ExceptionNoticeEmailConfig {
 
 	@Autowired
@@ -34,9 +34,11 @@ public class ExceptionNoticeEmailConfig {
 	private ExceptionNoticeProperty exceptionNoticeProperty;
 
 	@PostConstruct
-	public void configMail() {
+	public void emailNoticeSendComponent() {
 		Map<String, EmailExceptionNoticeProperty> emails = exceptionNoticeProperty.getEmail();
-		EmailNoticeSendComponent component = new EmailNoticeSendComponent(mailSender, mailProperties, emails);
-		exceptionHandler.registerNoticeSendComponent(component);
+		if (emails != null && emails.size() > 0) {
+			EmailNoticeSendComponent component = new EmailNoticeSendComponent(mailSender, mailProperties, emails);
+			exceptionHandler.registerNoticeSendComponent(component);
+		}
 	}
 }
