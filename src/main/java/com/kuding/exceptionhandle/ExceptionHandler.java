@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.scheduling.annotation.Scheduled;
@@ -61,7 +62,7 @@ public class ExceptionHandler {
 	 */
 	public ExceptionNotice createNotice(String blamedFor, RuntimeException exception) {
 		blamedFor = checkBlameFor(blamedFor);
-		if (exceptionNoticeProperty.getExcludeExceptions().contains(exception.getClass()))
+		if (containsException(exception))
 			return null;
 		ExceptionNotice exceptionNotice = new ExceptionNotice(exception,
 				exceptionNoticeProperty.getIncludedTracePackage(), null);
@@ -73,6 +74,16 @@ public class ExceptionHandler {
 
 	}
 
+	private boolean containsException(RuntimeException exception) {
+		Class<? extends RuntimeException> thisEClass = exception.getClass();
+		List<Class<? extends RuntimeException>> list = exceptionNoticeProperty.getExcludeExceptions();
+		for (Class<? extends RuntimeException> clazz : list) {
+			if (clazz.isAssignableFrom(thisEClass))
+				return true;
+		}
+		return false;
+	}
+
 	/**
 	 * 反射方式获取方法中出现的异常进行的通知
 	 * 
@@ -82,9 +93,9 @@ public class ExceptionHandler {
 	 * @param args      参数信息
 	 * @return
 	 */
-	public ExceptionNotice createNotice(String blamedFor, Throwable ex, String method, Object[] args) {
+	public ExceptionNotice createNotice(String blamedFor, RuntimeException ex, String method, Object[] args) {
 		blamedFor = checkBlameFor(blamedFor);
-		if (exceptionNoticeProperty.getExcludeExceptions().contains(ex.getClass()))
+		if (containsException(ex))
 			return null;
 		ExceptionNotice exceptionNotice = new ExceptionNotice(ex, exceptionNoticeProperty.getIncludedTracePackage(),
 				args);
@@ -110,7 +121,7 @@ public class ExceptionHandler {
 	public HttpExceptionNotice createHttpNotice(String blamedFor, RuntimeException exception, String url,
 			Map<String, String> param, String requesBody, Map<String, String> headers) {
 		blamedFor = checkBlameFor(blamedFor);
-		if (exceptionNoticeProperty.getExcludeExceptions().contains(exception.getClass()))
+		if (containsException(exception))
 			return null;
 		HttpExceptionNotice exceptionNotice = new HttpExceptionNotice(exception,
 				exceptionNoticeProperty.getIncludedTracePackage(), url, param, requesBody, headers);
@@ -136,7 +147,7 @@ public class ExceptionHandler {
 	public MultiTenantExceptionNotice createHttpNotice(String blamedFor, RuntimeException exception, String url,
 			Map<String, String> param, String requestBody, Map<String, String> headers, String tenantId) {
 		blamedFor = checkBlameFor(blamedFor);
-		if (exceptionNoticeProperty.getExcludeExceptions().contains(exception.getClass()))
+		if (containsException(exception))
 			return null;
 		MultiTenantExceptionNotice exceptionNotice = new MultiTenantExceptionNotice(exception,
 				exceptionNoticeProperty.getIncludedTracePackage(), url, param, requestBody, headers, tenantId);
