@@ -4,6 +4,7 @@ import static java.util.stream.Collectors.toList;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -44,7 +45,7 @@ public class ExceptionNotice {
 	/**
 	 * 异常追踪信息
 	 */
-	protected List<String> traceInfo;
+	protected List<String> traceInfo = new ArrayList<>();
 
 	/**
 	 * 最后一次出现的时间
