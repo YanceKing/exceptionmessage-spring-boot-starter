@@ -172,3 +172,26 @@ private String calUid() {
 	}
 ```
 **这里开启redis存储需要依赖spring-boot-starter-data-redis，需要用户自行配置**
+
+
+#### 背锅用户配置
+
+背锅用户的配置分为两种类型：
+    1. 背锅钉钉通知用户
+    2. 背锅邮件通知用户
+
+以上两种类型都通过map类型进行配置：
+```
+/**
+	 * 发送钉钉异常通知给谁
+	 */
+	Map<String, DingDingExceptionNoticeProperty> dingding;
+
+	/**
+	 * 发送邮件异常通知给谁
+	 */
+	Map<String, EmailExceptionNoticeProperty> email;
+```
+**其中map的key表示的是谁需要来背锅，也是注解``@ExceptionListener``所需要填写的参数的值**
+
+- 背锅钉钉通知还延续了原来的钉钉配置：
