@@ -241,3 +241,31 @@ exceptionnotice.strategy.frequency-type=timeout/showcount
 
 基本上以上策略足够使用，假如说还有更好的配置策略可以连系我
 
+#### 外援配置
+
+目前需要外援配置的信息有以下几个，其实上面也提到了
+
+1. 开启redis存储的话需要在``pom.xml``中加入如下依赖
+```
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-redis</artifactId>
+		</dependency>
+```
+加入依赖后需要开始配置redis
+```
+spring:
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    database: 0
+    password: 密码
+```
+
+2. 有邮件通知的话需要在``pom.xml``中加入如下依赖
+```
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-mail</artifactId>
+		</dependency>
+```
