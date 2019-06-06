@@ -113,4 +113,18 @@ public class DemoApplicationTests {
 ```
 然后你的钉钉的另一个机器人又会出现如下消息：
 ![效果](/src/main/resources/QQ图片20190606140534.png)
+最后一个测试当然你可以做测试``noticeComponents.anotherMethod("赵四" , 55);``，但是可以明确的告诉你没有任何结果通知这是因为配置了
+```
+ exclude-exceptions:
+  - java.lang.IllegalArgumentException
+```
+而且方法抛出的也恰恰是此异常：
+```
+public void anotherMethod(String name, int age) {
+		System.out.println("这又是一个参数" + age);
+		throw new IllegalArgumentException(name + ":" + age);
+	}
+```
+所以自然不会有结果。
 
+综上，一个简单的例子就完成了。
