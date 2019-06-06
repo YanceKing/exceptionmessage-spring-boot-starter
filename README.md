@@ -171,3 +171,4 @@ private String calUid() {
 		return md5;
 	}
 ```
+**这里开启redis存储需要依赖spring-boot-starter-data-redis，需要用户自行配置**
