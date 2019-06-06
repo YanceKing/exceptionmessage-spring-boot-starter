@@ -154,4 +154,20 @@ public void anotherMethod(String name, int age) {
 exceptionnotice.include-header-name=headerName1,headerName2
 ```
 - ```exceptionnotice.default-notice```是用来进行默认背锅侠的配置，用于``@ExceptionListener``的缺省参数
-- 项目中的异常一般分类两大类：第一类为未捕获异常，第二类为业务异常。业务异常一般由用户自己定义的异常，在javaweb项目中，假如用户的请求不满足返回结果的条件，一般是需要主动抛出自定义异常的，所以这类异常并不需要进行通知
+- 项目中的异常一般分类两大类：第一类为未捕获异常，第二类为业务异常。业务异常一般由用户自己定义的异常，在javaweb项目中，假如用户的请求不满足返回结果的条件，一般是需要主动抛出自定义异常的，所以这类异常并不需要进行通知。排除不需要异常通知的配置如下：
+```
+ exceptionnotice.exclude-exceptions=java.lang.IllegalArgumentException,com.yourpackage.SomeException
+```
+- 为了方便进行扩展开发，本框架还支持异常信息的持久化，目前只支持进行redis的持久化，开启redis持久化需要进行如下配置
+```
+exceptionnotice.enable-redis-storage=true
+exceptionnotice.redis-key=你自己的redis键
+```
+存储redis的结构为redis的HASH接口，HASH的键是异常通知信息中的算出的一个唯一id，HASH的值是对应的异常信息，唯一id的算法也很简单：
+```
+private String calUid() {
+		String md5 = DigestUtils.md5DigestAsHex(
+				String.format("%s-%s", exceptionMessage, traceInfo.size() > 0 ? traceInfo.get(0) : "").getBytes());
+		return md5;
+	}
+```
