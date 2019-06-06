@@ -154,4 +154,4 @@ public void anotherMethod(String name, int age) {
 exceptionnotice.include-header-name=headerName1,headerName2
 ```
 - ```exceptionnotice.default-notice```是用来进行默认背锅侠的配置，用于``@ExceptionListener``的缺省参数
-- 
+- 项目中的异常一般分类两大类：第一类为未捕获异常，第二类为业务异常。业务异常一般由用户自己定义的异常，在javaweb项目中，假如用户的请求不满足返回结果的条件，一般是需要主动抛出自定义异常的，所以这类异常并不需要进行通知
