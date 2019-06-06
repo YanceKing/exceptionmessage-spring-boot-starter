@@ -13,6 +13,7 @@
 
 ![jdk版本](https://img.shields.io/badge/java-1.8%2B-red.svg?style=for-the-badge&logo=appveyor)
 ![maven版本](https://img.shields.io/badge/maven-3.2.5%2B-red.svg?style=for-the-badge&logo=appveyor)
+![spring boot](https://img.shields.io/badge/spring%20boot-2.0.0.RELEASE%2B-red.svg?style=for-the-badge&logo=appveyor)
 
 #### 当前版本
 
@@ -22,15 +23,75 @@
 #### 最快上手
 
 1. 将此工程通过``mvn clean install``打包到本地仓库中。
-
-2. 在``pom.xml``中做如下依赖
-
+2. 在你的工程中的``pom.xml``中做如下依赖
 ```
 		<dependency>
 			<groupId>com.kuding</groupId>
 			<artifactId>prometheus-spring-boot-starter</artifactId>
 			<version>0.3.3-team</version>
 		</dependency>
+```
+3. 在``application.properties``或者``application.yml``中做如下的配置：（至于以上的配置说明后面的章节会讲到）
+```
+exceptionnotice:
+  dingding:
+    user1: 
+      phone-num: user1的手机号
+      web-hook: user1设置的钉钉机器人的web-hook
+    user2:
+      phone-num: user2的手机号
+      web-hook: user2设置的钉钉机器人的web-hook
+  included-trace-package: 异常最终信息包含的包路径
+  listen-type: common
+  open-notice: true
+  default-notice: user1
+  exclude-exceptions:
+  - java.lang.IllegalArgumentException
 
 ```
+4. 至于钉钉的配置请移步：[钉钉机器人](https://open-doc.dingtalk.com/microapp/serverapi2/krgddi "自定义机器人")
+5. 以上配置好以后就可以写demo测试啦，首先创建第一个bean：
+```
+@Component
+@ExceptionListener //异常通知的监控来自这个注解
+public class NoticeComponents {
+
+	public void someMethod(String name) {
+		System.out.println("这是一个参数：" + name);
+		throw new NullPointerException("第一个异常");
+	}
+
+	public void anotherMethod(String name, int age) {
+		System.out.println("这又是一个参数" + age);
+		throw new IllegalArgumentException(name + ":" + age);
+	}
+}
+```
+当然还需要另外一个比较的bean：
+```
+@Component
+public class AnotherComponent {
+
+	@ExceptionListener("user2") //注意注解位置与参数
+	public void giveMeError() {
+		throw new NullPointerException("又是一个有故事的异常");
+	}
+}
+```
+6. 以上都建立好了以后，就可以写单元测试了，首先上第一个测试：
+```
+@RunWith(SpringRunner.class)
+@SpringBootTest
+public class DemoApplicationTests {
+
+	@Autowired
+	private AnotherComponent anotherComponent;
+
+	@Test
+	public void contextLoads() {
+		anotherComponent.giveMeError();
+	}
+}
+```
+当运行单元测试后，假如钉钉配置没有问题的话，你的钉钉中就会出现如下类似的消息：
 
