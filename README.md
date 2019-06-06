@@ -94,4 +94,5 @@ public class DemoApplicationTests {
 }
 ```
 当运行单元测试后，假如钉钉配置没有问题的话，你的钉钉中就会出现如下类似的消息：
+![效果](/src/main/resources/QQ图片20190606135538.png)
 
