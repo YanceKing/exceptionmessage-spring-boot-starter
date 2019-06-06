@@ -195,3 +195,28 @@ private String calUid() {
 **其中map的key表示的是谁需要来背锅，也是注解``@ExceptionListener``所需要填写的参数的值**
 
 - 背锅钉钉通知还延续了原来的钉钉配置：
+``
+exceptionnotice:
+  dingding:
+    user1: 
+      phone-num: user1的手机号
+      web-hook: user1设置的钉钉机器人的web-hook
+``
+- 背锅邮件通知同样也延续了原来的邮件配置，同样依赖``spring-boot-starter-mail``及其配置
+```
+spring:
+  mail:
+    host: smtp.xxx.com
+    port: 25
+    username: 开启smtp权限的邮箱用户名
+    password: 密码
+
+exceptionnotice:
+  email:
+    user3:
+      from: 发件人
+      to: 给谁发
+      cc: 抄送给谁
+      bcc: 秘密抄送给谁
+```
+
