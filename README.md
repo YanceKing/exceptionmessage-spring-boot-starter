@@ -128,3 +128,9 @@ public void anotherMethod(String name, int age) {
 所以自然不会有结果。
 
 综上，一个简单的例子就完成了。
+
+#### 咋做的
+
+本框架遵循spring boot starter的自动化配置规范而开发的自动化异常通知框架，在原有的单人版基础上进行了多处改进并升级成团队版，整体业务流程如下：
+![流程](/src/main/resources/liucheng2.png)
+
