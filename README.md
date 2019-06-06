@@ -95,4 +95,22 @@ public class DemoApplicationTests {
 ```
 当运行单元测试后，假如钉钉配置没有问题的话，你的钉钉中就会出现如下类似的消息：
 ![效果](/src/main/resources/QQ图片20190606135538.png)
+当然，还需要测试另一个bean的效果：
+```
+@RunWith(SpringRunner.class)
+@SpringBootTest
+public class DemoApplicationTests {
+
+	@Autowired
+	private NoticeComponents noticeComponents;
+
+	@Test
+	public void contextLoads() {
+		noticeComponents.someMethod("赵四");
+	}
+
+}
+```
+然后你的钉钉的另一个机器人又会出现如下消息：
+![效果](/src/main/resources/QQ图片20190606140534.png)
 
