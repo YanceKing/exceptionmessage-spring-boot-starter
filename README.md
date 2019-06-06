@@ -12,12 +12,25 @@
 #### 系统需求
 
 ![jdk版本](https://img.shields.io/badge/java-1.8%2B-red.svg?style=for-the-badge&logo=appveyor)
+![maven版本](https://img.shields.io/badge/maven-3.2.5%2B-red.svg?style=for-the-badge&logo=appveyor)
 
 #### 当前版本
 
 ![目前工程版本](https://img.shields.io/badge/version-0.3.3--team-green.svg?style=for-the-badge&logo=appveyor)
 
 
-@[TOC] 目录
+#### 最快上手
 
+1. 将此工程通过``mvn clean install``打包到本地仓库中。
+
+2. 在``pom.xml``中做如下依赖
+
+```
+		<dependency>
+			<groupId>com.kuding</groupId>
+			<artifactId>prometheus-spring-boot-starter</artifactId>
+			<version>0.3.3-team</version>
+		</dependency>
+
+```
 
