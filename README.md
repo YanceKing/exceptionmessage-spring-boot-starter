@@ -297,3 +297,5 @@ spring:
 
 
 ## TODO 写不动了……
+
+[![Fork me on Gitee](https://gitee.com/ITEater/prometheus-spring-boot-starter/widgets/widget_2.svg)](https://gitee.com/ITEater/prometheus-spring-boot-starter)
