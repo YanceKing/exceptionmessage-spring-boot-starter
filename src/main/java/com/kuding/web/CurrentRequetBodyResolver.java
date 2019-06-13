@@ -7,4 +7,6 @@ public interface CurrentRequetBodyResolver extends RequestBodyAdvice {
 	default String getRequestBody() {
 		return "";
 	}
+
+	void remove();
 }

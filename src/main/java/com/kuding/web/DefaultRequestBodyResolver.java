@@ -20,7 +20,12 @@ public class DefaultRequestBodyResolver extends RequestBodyAdviceAdapter impleme
 	@Override
 	public Object afterBodyRead(Object body, HttpInputMessage inputMessage, MethodParameter parameter, Type targetType,
 			Class<? extends HttpMessageConverter<?>> converterType) {
-		String bodyStr = body.toString();
+		StringBuilder stringBuilder = new StringBuilder(body.toString());
+		String bodyStr = "";
+		if (stringBuilder.length() > 500)
+			bodyStr = stringBuilder.substring(0, 500) + "...";
+		else
+			bodyStr = stringBuilder.toString();
 		logger.debug("请求体信息：" + bodyStr);
 		currentRequestBodyInfo.set(bodyStr);
 		return body;
@@ -36,6 +41,10 @@ public class DefaultRequestBodyResolver extends RequestBodyAdviceAdapter impleme
 	@Override
 	public String getRequestBody() {
 		return currentRequestBodyInfo.get();
+	}
+
+	public void remove() {
+		currentRequestBodyInfo.remove();
 	}
 
 }

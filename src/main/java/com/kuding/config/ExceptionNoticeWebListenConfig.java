@@ -12,12 +12,14 @@ import org.springframework.boot.autoconfigure.web.servlet.WebMvcRegistrations;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.HandlerExceptionResolver;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.mvc.method.annotation.RequestBodyAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter;
 
 import com.kuding.exceptionhandle.ExceptionHandler;
 import com.kuding.properties.ExceptionNoticeProperty;
+import com.kuding.web.ClearBodyInterceptor;
 import com.kuding.web.CurrentRequestHeaderResolver;
 import com.kuding.web.CurrentRequetBodyResolver;
 import com.kuding.web.DefaultRequestBodyResolver;
@@ -47,6 +49,18 @@ public class ExceptionNoticeWebListenConfig implements WebMvcConfigurer, WebMvcR
 		return exceptionNoticeResolver;
 	}
 
+	@Override
+	public void addInterceptors(InterceptorRegistry registry) {
+		registry.addInterceptor(clearBodyInterceptor());
+	}
+
+	@Bean
+	public ClearBodyInterceptor clearBodyInterceptor() {
+		ClearBodyInterceptor bodyInterceptor = new ClearBodyInterceptor(currentRequetBodyResolver());
+		return bodyInterceptor;
+
+	}
+
 	@Bean
 	@ConditionalOnMissingBean(value = CurrentRequestHeaderResolver.class)
 	public CurrentRequestHeaderResolver currentRequestHeaderResolver() {
@@ -54,7 +68,6 @@ public class ExceptionNoticeWebListenConfig implements WebMvcConfigurer, WebMvcR
 	}
 
 	@Bean
-	@ConditionalOnMissingBean(value = CurrentRequetBodyResolver.class)
 	public CurrentRequetBodyResolver currentRequetBodyResolver() {
 		return new DefaultRequestBodyResolver();
 	}

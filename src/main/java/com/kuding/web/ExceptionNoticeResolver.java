@@ -86,4 +86,5 @@ public class ExceptionNoticeResolver implements HandlerExceptionResolver {
 			listener = handlerMethod.getBeanType().getAnnotation(ExceptionListener.class);
 		return listener;
 	}
+
 }
