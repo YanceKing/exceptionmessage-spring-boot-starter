@@ -8,6 +8,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.util.StringUtils;
 
@@ -31,6 +33,8 @@ public class ExceptionHandler {
 	private final Map<String, INoticeSendComponent> blameMap = new HashMap<>();
 
 	private final Map<String, ExceptionStatistics> checkUid = Collections.synchronizedMap(new HashMap<>());
+
+	private final Log logger = LogFactory.getLog(getClass());
 
 	public ExceptionHandler(ExceptionNoticeProperty exceptionNoticeProperty,
 			Collection<INoticeSendComponent> noticeSendComponents,
@@ -162,6 +166,7 @@ public class ExceptionHandler {
 		Boolean needNotice = false;
 		String uid = exceptionNotice.getUid();
 		ExceptionStatistics exceptionStatistics = checkUid.get(uid);
+		logger.debug(exceptionStatistics);
 		if (exceptionStatistics != null) {
 			Long count = exceptionStatistics.plusOne();
 			if (exceptionNoticeFrequencyStrategy.getEnabled()) {
@@ -176,8 +181,10 @@ public class ExceptionHandler {
 			}
 		} else {
 			exceptionStatistics = new ExceptionStatistics(uid);
-			checkUid.put(uid, exceptionStatistics);
-			needNotice = true;
+			synchronized (exceptionStatistics) {
+				checkUid.put(uid, exceptionStatistics);
+				needNotice = true;
+			}
 		}
 		if (exceptionRedisStorageComponent != null)
 			exceptionRedisStorageComponent.save(exceptionNotice);
