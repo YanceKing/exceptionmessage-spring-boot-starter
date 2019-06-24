@@ -5,6 +5,14 @@
 
 0.3版本已基本完成，主要针对团队合作进行的改进，后续0.2版本的升级与0.3版本的升级分开，0.2版本主要针对个人用户，0.3版本主要针对团队开发
 
+
+## 2019-06-24更新
+
+1. 改进：web处理增加一个拦截器，专门清除为异常通知保存的请求体信息
+2. 修复bug：修复了初次出现异常产生的并发导致重复发送的问题
+3. 当前版本号变为*0.3.5-team*
+
+
 ## 前言
 
 对于工程的开发，必然会伴随着各种bug，工程量越大，出现bug的频率也会越高。一般对于代码量较小的工程来说，一个人可能就足够去做开发与维护；但是对于代码量较大的工程往往是需要一个小团队协作开发。当工程基本完成，开始部署测试环境或者生产环境时，这些环境并不能像开发环境一样能快速的调试与维护，线上的工程一旦出现异常时，开发团队就需要主动感知异常并协调处理，当然人不能一天24小时去盯着线上工程，所以就需要一种机制来自动化的对异常进行通知，并精确到谁负责的那块代码。这样会极大地方便后续的运维。因此，本项目的团队版上线
@@ -17,7 +25,7 @@
 
 ## 当前版本
 
-![目前工程版本](https://img.shields.io/badge/version-0.3.3--team-green.svg?style=for-the-badge&logo=appveyor)
+![目前工程版本](https://img.shields.io/badge/version-0.3.5--team-green.svg?style=for-the-badge&logo=appveyor)
 
 
 ## 最快上手
@@ -28,7 +36,7 @@
 		<dependency>
 			<groupId>com.kuding</groupId>
 			<artifactId>prometheus-spring-boot-starter</artifactId>
-			<version>0.3.3-team</version>
+			<version>0.3.5-team</version>
 		</dependency>
 ```
 3. 在``application.properties``或者``application.yml``中做如下的配置：（至于以上的配置说明后面的章节会讲到）
