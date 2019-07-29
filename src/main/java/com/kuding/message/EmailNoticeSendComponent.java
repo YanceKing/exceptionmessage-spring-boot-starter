@@ -2,6 +2,8 @@ package com.kuding.message;
 
 import java.util.regex.Pattern;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.boot.autoconfigure.mail.MailProperties;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
@@ -11,29 +13,27 @@ import com.kuding.properties.EmailExceptionNoticeProperty;
 
 public class EmailNoticeSendComponent implements INoticeSendComponent {
 
-	private MailSender mailSender;
+	private final Log logger = LogFactory.getLog(getClass());
 
-	private MailProperties mailProperties;
+	private final MailSender mailSender;
 
-	private EmailExceptionNoticeProperty emailExceptionNoticeProperty;
+	private final MailProperties mailProperties;
+
+	private final EmailExceptionNoticeProperty emailExceptionNoticeProperty;
 
 	public EmailNoticeSendComponent(MailSender mailSender, MailProperties mailProperties,
 			EmailExceptionNoticeProperty emailExceptionNoticeProperty) {
 		this.mailSender = mailSender;
 		this.mailProperties = mailProperties;
 		this.emailExceptionNoticeProperty = emailExceptionNoticeProperty;
-		checkAllEmails();
+		checkAllEmails(emailExceptionNoticeProperty);
 
-	}
-
-	public EmailNoticeSendComponent() {
 	}
 
 	@Override
 	public void send(ExceptionNotice exceptionNotice) {
 		SimpleMailMessage mailMessage = new SimpleMailMessage();
-		String fromEmail = emailExceptionNoticeProperty.getFrom();
-		fromEmail = fromEmail == null ? mailProperties.getUsername() : fromEmail;
+		String fromEmail = mailProperties.getUsername();
 		mailMessage.setFrom(fromEmail);
 		mailMessage.setTo(emailExceptionNoticeProperty.getTo());
 		String[] cc = emailExceptionNoticeProperty.getCc();
@@ -53,8 +53,8 @@ public class EmailNoticeSendComponent implements INoticeSendComponent {
 		return false;
 	}
 
-	private void checkAllEmails() {
-		String fromEmail = emailExceptionNoticeProperty.getFrom();
+	private void checkAllEmails(EmailExceptionNoticeProperty emailExceptionNoticeProperty) {
+		String fromEmail = mailProperties.getUsername();
 		if (fromEmail != null && !isEmail(fromEmail))
 			throw new IllegalArgumentException("发件人邮箱错误");
 		String[] toEmail = emailExceptionNoticeProperty.getTo();
@@ -79,4 +79,26 @@ public class EmailNoticeSendComponent implements INoticeSendComponent {
 			}
 		}
 	}
+
+	/**
+	 * @return the mailSender
+	 */
+	public MailSender getMailSender() {
+		return mailSender;
+	}
+
+	/**
+	 * @return the mailProperties
+	 */
+	public MailProperties getMailProperties() {
+		return mailProperties;
+	}
+
+	/**
+	 * @return the emailExceptionNoticeProperty
+	 */
+	public EmailExceptionNoticeProperty getEmailExceptionNoticeProperty() {
+		return emailExceptionNoticeProperty;
+	}
+
 }

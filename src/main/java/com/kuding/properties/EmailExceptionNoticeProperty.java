@@ -1,16 +1,9 @@
 package com.kuding.properties;
 
-import java.util.Arrays;
-
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 @ConfigurationProperties(prefix = "exceptionnotice.email")
 public class EmailExceptionNoticeProperty {
-
-	/**
-	 * 发件人，默认是通过springboot javamail配置的stmp的用户名
-	 */
-	private String from;
 
 	/**
 	 * 收件人
@@ -26,20 +19,6 @@ public class EmailExceptionNoticeProperty {
 	 * 密抄送
 	 */
 	private String[] bcc;
-
-	/**
-	 * @return the from
-	 */
-	public String getFrom() {
-		return from;
-	}
-
-	/**
-	 * @param from the from to set
-	 */
-	public void setFrom(String from) {
-		this.from = from;
-	}
 
 	/**
 	 * @return the to
@@ -82,17 +61,5 @@ public class EmailExceptionNoticeProperty {
 	public void setBcc(String[] bcc) {
 		this.bcc = bcc;
 	}
-
-	/* (non-Javadoc)
-	 * @see java.lang.Object#toString()
-	 */
-	@Override
-	public String toString() {
-		return "EmailExceptionNoticeProperty [from=" + from + ", to=" + Arrays.toString(to) + ", cc="
-				+ Arrays.toString(cc) + ", bcc=" + Arrays.toString(bcc) + "]";
-	}
-	
-	
-	
 
 }

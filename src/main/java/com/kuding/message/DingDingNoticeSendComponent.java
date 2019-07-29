@@ -14,9 +14,9 @@ public class DingDingNoticeSendComponent implements INoticeSendComponent {
 
 	private SimpleHttpClient simpleHttpClient;
 
-	private ExceptionNoticeProperty exceptionNoticeProperty;
+	private final ExceptionNoticeProperty exceptionNoticeProperty;
 
-	private DingDingExceptionNoticeProperty dingDingExceptionNoticeProperty;
+	private final DingDingExceptionNoticeProperty dingDingExceptionNoticeProperty;
 
 	private final Log logger = LogFactory.getLog(getClass());
 
@@ -50,10 +50,10 @@ public class DingDingNoticeSendComponent implements INoticeSendComponent {
 	}
 
 	/**
-	 * @param exceptionNoticeProperty the exceptionNoticeProperty to set
+	 * @return the dingDingExceptionNoticeProperty
 	 */
-	public void setExceptionNoticeProperty(ExceptionNoticeProperty exceptionNoticeProperty) {
-		this.exceptionNoticeProperty = exceptionNoticeProperty;
+	public DingDingExceptionNoticeProperty getDingDingExceptionNoticeProperty() {
+		return dingDingExceptionNoticeProperty;
 	}
 
 	@Override
@@ -64,5 +64,4 @@ public class DingDingNoticeSendComponent implements INoticeSendComponent {
 				DingDingResult.class);
 		logger.debug(result);
 	}
-
 }

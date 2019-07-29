@@ -4,7 +4,7 @@ import java.util.Arrays;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
-@ConfigurationProperties(prefix = "exceptionnotice.dingding")
+@ConfigurationProperties(prefix = "exceptionnotice.email")
 public class DingDingExceptionNoticeProperty {
 
 	/**
@@ -45,7 +45,9 @@ public class DingDingExceptionNoticeProperty {
 		this.webHook = webHook;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
@@ -53,5 +55,4 @@ public class DingDingExceptionNoticeProperty {
 		return "DingDingExceptionNoticeProperty [phoneNum=" + Arrays.toString(phoneNum) + ", webHook=" + webHook + "]";
 	}
 
-	
 }

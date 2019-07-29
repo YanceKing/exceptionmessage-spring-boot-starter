@@ -16,8 +16,6 @@ public class ExceptionRedisStorageComponent {
 
 	private StringRedisTemplate stringRedisTemplate;
 
-	private Gson gson;
-
 	public ExceptionRedisStorageComponent(ExceptionNoticeProperty exceptionNoticeProperty,
 			StringRedisTemplate stringRedisTemplate, Gson gson) {
 		if (exceptionNoticeProperty.getRedisKey() == null) {
@@ -25,7 +23,6 @@ public class ExceptionRedisStorageComponent {
 		}
 		this.exceptionNoticeProperty = exceptionNoticeProperty;
 		this.stringRedisTemplate = stringRedisTemplate;
-		this.gson = gson;
 	}
 
 	/**
@@ -63,7 +60,7 @@ public class ExceptionRedisStorageComponent {
 	public Boolean save(ExceptionNotice exception) {
 		String uid = exception.getUid();
 		BoundHashOperations<String, String, String> boundHashOperations = getops();
-		Boolean notEx = boundHashOperations.putIfAbsent(uid, gson.toJson(exception));
+		Boolean notEx = boundHashOperations.putIfAbsent(uid, exception.createText());
 		return notEx;
 	}
 
@@ -71,7 +68,7 @@ public class ExceptionRedisStorageComponent {
 		Map<String, String> map = getops().entries();
 		return map;
 	}
-
+	
 	public void del(String uid) {
 		getops().delete(uid);
 	}

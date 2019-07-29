@@ -2,16 +2,19 @@ package com.kuding.content;
 
 import static java.util.stream.Collectors.toList;
 
+import java.time.format.DateTimeFormatter;
 import java.util.Map;
 
 public class HttpExceptionNotice extends ExceptionNotice {
 
 	public HttpExceptionNotice(RuntimeException exception, String filter, String url, Map<String, String> param,
-			String requestBody) {
+			String requestBody, Map<String, String> headers) {
 		super(exception, filter, null);
 		this.url = url;
 		this.paramInfo = param;
 		this.requestBody = requestBody;
+		this.headers = headers;
+
 	}
 
 	protected String url;
@@ -19,6 +22,8 @@ public class HttpExceptionNotice extends ExceptionNotice {
 	protected Map<String, String> paramInfo;
 
 	protected String requestBody;
+
+	protected Map<String, String> headers;
 
 	/**
 	 * @return the url
@@ -62,6 +67,20 @@ public class HttpExceptionNotice extends ExceptionNotice {
 		this.requestBody = requestBody;
 	}
 
+	/**
+	 * @return the headers
+	 */
+	public Map<String, String> getHeaders() {
+		return headers;
+	}
+
+	/**
+	 * @param headers the headers to set
+	 */
+	public void setHeaders(Map<String, String> headers) {
+		this.headers = headers;
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -75,20 +94,30 @@ public class HttpExceptionNotice extends ExceptionNotice {
 		if (paramInfo != null && paramInfo.size() > 0) {
 			stringBuilder.append("接口参数：").append("\r\n")
 					.append(String.join("\r\r", paramInfo.entrySet().stream()
-							.map(x -> String.format("%s:%s", x.getKey(), x.getValue())).collect(toList())))
+							.map(x -> String.format("%s::%s", x.getKey(), x.getValue())).collect(toList())))
 					.append("\r\n");
-			if (requestBody != null) {
-				stringBuilder.append("请求体数据：").append(requestBody).append("\r\n");
-			}
+		}
+		if (requestBody != null) {
+			stringBuilder.append("请求体数据：").append(requestBody).append("\r\n");
+		}
+		if (headers != null && headers.size() > 0) {
+			stringBuilder.append("请求头：").append("\r\n");
+			stringBuilder.append(String.join(",\t", headers.entrySet().stream()
+					.map(x -> String.format("%s::%s", x.getKey(), x.getValue())).collect(toList())));
+			stringBuilder.append("\r\n");
 		}
 		stringBuilder.append("类路径：").append(classPath).append("\r\n");
 		stringBuilder.append("方法名：").append(methodName).append("\r\n");
 		if (parames != null && parames.size() > 0) {
 			stringBuilder.append("参数信息：")
-					.append(String.join(",", parames.stream().map(x -> x.toString()).collect(toList()))).append("\r\n");
+					.append(String.join("\t,\t", parames.stream().map(x -> x.toString()).collect(toList())))
+					.append("\r\n");
 		}
 		stringBuilder.append("异常信息：").append(exceptionMessage).append("\r\n");
 		stringBuilder.append("异常追踪：").append("\r\n").append(String.join("\r\n", traceInfo)).append("\r\n");
+		stringBuilder.append("最后一次出现时间：")
+				.append(latestShowTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))).append("\r\n");
+		stringBuilder.append("出现次数：").append(showCount).append("\r\n");
 		return stringBuilder.toString();
 	}
 

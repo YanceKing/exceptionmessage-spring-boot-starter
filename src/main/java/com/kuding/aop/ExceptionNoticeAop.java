@@ -8,6 +8,7 @@ import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Aspect;
 
+import com.kuding.anno.ExceptionListener;
 import com.kuding.exceptionhandle.ExceptionHandler;
 
 @Aspect
@@ -21,13 +22,13 @@ public class ExceptionNoticeAop {
 		this.exceptionHandler = exceptionHandler;
 	}
 
-	@AfterThrowing(value = "@within(com.kuding.anno.ExceptionListener)", throwing = "e")
-	public void exceptionNotice(JoinPoint joinPoint, RuntimeException e) {
+	@AfterThrowing(value = "@within(listener)", throwing = "e", argNames = "listener,e")
+	public void exceptionNotice(JoinPoint joinPoint, ExceptionListener listener, RuntimeException e) {
 		handleException(e, joinPoint.getSignature().getName(), joinPoint.getArgs());
 	}
 
-	@AfterThrowing(value = "@annotation(com.kuding.anno.ExceptionListener)", throwing = "e")
-	public void exceptionNoticeWithMethod(JoinPoint joinPoint, RuntimeException e) {
+	@AfterThrowing(value = "@annotation(listener)", throwing = "e", argNames = "listener,e")
+	public void exceptionNoticeWithMethod(JoinPoint joinPoint, ExceptionListener listener, RuntimeException e) {
 		handleException(e, joinPoint.getSignature().getName(), joinPoint.getArgs());
 	}
 
