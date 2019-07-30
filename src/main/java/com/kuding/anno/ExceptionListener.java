@@ -10,11 +10,4 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ ElementType.METHOD, ElementType.TYPE })
 public @interface ExceptionListener {
-
-	/**
-	 * 出错了找谁？？？
-	 * @return
-	 */
-	String value() default "";
-
 }
