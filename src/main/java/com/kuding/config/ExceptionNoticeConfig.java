@@ -8,10 +8,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
-import com.google.gson.Gson;
 import com.kuding.aop.ExceptionNoticeAop;
 import com.kuding.exceptionhandle.ExceptionHandler;
-import com.kuding.httpclient.SimpleHttpClient;
 import com.kuding.message.INoticeSendComponent;
 import com.kuding.properties.ExceptionNoticeFrequencyStrategy;
 import com.kuding.properties.ExceptionNoticeProperty;
@@ -25,9 +23,6 @@ public class ExceptionNoticeConfig {
 
 	@Autowired
 	private ExceptionNoticeProperty exceptionNoticeProperty;
-
-	@Autowired
-	private Gson gson;
 
 	@Bean
 	@ConditionalOnProperty(name = "exceptionnotice.listen-type", havingValue = "common", matchIfMissing = true)
@@ -44,12 +39,6 @@ public class ExceptionNoticeConfig {
 		ExceptionHandler exceptionHandler = new ExceptionHandler(exceptionNoticeProperty, sendComponent,
 				exceptionNoticeFrequencyStrategy);
 		return exceptionHandler;
-	}
-
-	@Bean
-	public SimpleHttpClient simpleHttpClient() {
-		SimpleHttpClient httpClient = new SimpleHttpClient(gson);
-		return httpClient;
 	}
 
 }

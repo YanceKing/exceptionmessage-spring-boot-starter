@@ -59,8 +59,8 @@ public class ExceptionNoticeResolver implements HandlerExceptionResolver {
 			handlerMethod = (HandlerMethod) handler;
 		ExceptionListener listener = getListener(handlerMethod);
 		if (listener != null && e != null && handler != null) {
-			HttpExceptionNotice exceptionNotice = exceptionHandler.createHttpNotice(listener.value(), e,
-					request.getRequestURI(), getParames(request), getRequestBody(), getHeader(request));
+			HttpExceptionNotice exceptionNotice = exceptionHandler.createHttpNotice(e, request.getRequestURI(),
+					getParames(request), getRequestBody(), getHeader(request));
 			logger.debug(exceptionNotice);
 		}
 		return null;

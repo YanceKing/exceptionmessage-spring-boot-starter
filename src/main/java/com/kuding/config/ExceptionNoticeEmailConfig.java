@@ -13,11 +13,13 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.mail.MailSender;
 
 import com.kuding.message.EmailNoticeSendComponent;
+import com.kuding.message.INoticeSendComponent;
 import com.kuding.properties.EmailExceptionNoticeProperty;
 
 @Configuration
 @AutoConfigureAfter({ MailSenderAutoConfiguration.class })
 @ConditionalOnBean({ MailSender.class, MailProperties.class })
+@ConditionalOnMissingBean(INoticeSendComponent.class)
 @ConditionalOnProperty(value = "exceptionnotice.notice-type", havingValue = "email")
 @EnableConfigurationProperties({ EmailExceptionNoticeProperty.class })
 public class ExceptionNoticeEmailConfig {
