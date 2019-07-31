@@ -3,7 +3,9 @@
 #### 前言的前言：
 
 
-此分支适合于个人开发的工程，团队版分支请移步团队版分支，个人版版本号由发布版本号加**personal**后缀组成。
+- 个人用异常通知请移步：[个人版分支](https://gitee.com/ITEater/prometheus-spring-boot-starter/tree/personal/)
+
+- 多人协作开发需要异常通知请移步：[团队版分支](https://gitee.com/ITEater/prometheus-spring-boot-starter/tree/team/)
 
 
 
