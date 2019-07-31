@@ -4,7 +4,7 @@ import java.util.Arrays;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
-@ConfigurationProperties(prefix = "exceptionnotice.email")
+@ConfigurationProperties(prefix = "exceptionnotice.dinding")
 public class DingDingExceptionNoticeProperty {
 
 	/**
