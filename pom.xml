@@ -4,9 +4,9 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>com.kuding</groupId>
+	<groupId>com.yanceking</groupId>
 	<artifactId>prometheus-spring-boot-starter</artifactId>
-	<version>0.2.2-personal</version>
+	<version>1.0-personal</version>
 
 	<name>prometheus-spring-boot-starter</name>
 	<description>异常信息处理</description>
