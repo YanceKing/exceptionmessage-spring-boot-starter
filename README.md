@@ -1,17 +1,5 @@
 # 一个异常通知的spring-boot-start框架 prometheus-spring-boot-starter
 
-#### 前言的前言：
-
-
-- 个人用异常通知请移步：[个人版分支](https://gitee.com/ITEater/prometheus-spring-boot-starter/tree/personal/)
-
-- 多人协作开发需要异常通知请移步：[团队版分支](https://gitee.com/ITEater/prometheus-spring-boot-starter/tree/team/)
-
-
-
-## 前言
-
-首先，本人很懒（orz），虽然说日常写完项目代码后是都需要进行相关代码段的测试的，但事与愿违，有很多情况你可能会忘了测试，或者测试了感觉没问题实际上问题没暴露（主观测试很容易让测试结果按照你的想法输出），然后把代码merge，然后提交到测试服务器，然后就去睡大觉了，第二天醒来以后，发现程序运行各种bug，这时候你就开始把前一天的代码重新拉出来开始看……等等，我先收集一下bug吧，然后打开服务器，打开输出日志……天哪，由于是测试服务器，你可能会开很多的日志（比如：sql日志，格式化了还带参数；接口调用日志等等等等），有可能某个同事由于闲的蛋疼，特意对于某个出错的功能试了十几遍……面对成千上万行的日志，针对性的找出相应的异常实在是一件令人头疼的事。所以就需要每当工程出异常了，直接通知我不就好了嘛？
 
 #### 系统需求
 
@@ -19,66 +7,24 @@
 ![maven版本](https://img.shields.io/badge/maven-3.2.5%2B-red.svg?style=for-the-badge&logo=appveyor)
 ![spring boot](https://img.shields.io/badge/spring%20boot-2.0.0.RELEASE%2B-red.svg?style=for-the-badge&logo=appveyor)
 
-
-
-#### 2019-07-31更新
-
-1. **集成了团队版所带的所有新特性（web-mvc模式、策略等）**
-
-2. 版本号变为**0.2.2-personal**
-
-3. 对说明文档进行详细的修改
-
-#### 2019-04-25更新
-
-1. 将spring的版本升级为最新版本（2.1.4），本工程的版本升级为0.2.1
-
-2. 在``ExceptionNoticeProperty``配置中加入了新的注解``openNotice``(默认状态为false)，方便开启或关闭整个异常通知框架（感谢网友支持）
-
-3. 关于工程名的问题：``exceptionnotice.project-name``建议添上，之前想过用``spring.application.name``做替代方案，之后再加
-
-
-#### 2019-03-14更新
-
-1. 对``ExceptionNoticeConfig``中aop的配置：``exceptionNoticeAop(ExceptionHandler exceptionHandler)``的一个条件中添加了``matchIfMissing = true``来保证默认情况下的aop对象的正常加载
-
-```
-        @Bean
-	@ConditionalOnProperty(name = "exceptionnotice.enable-check-annotation", havingValue = "true", matchIfMissing = true)
-	@ConditionalOnMissingBean(ExceptionNoticeAop.class)
-	public ExceptionNoticeAop exceptionNoticeAop(ExceptionHandler exceptionHandler) {
-		ExceptionNoticeAop aop = new ExceptionNoticeAop(exceptionHandler);
-		return aop;
-	}
-```
-
-#### 2019-01-14更新
-
-1. 修改了一些bug（修改了aop处理注解的路径拼写问题linstener... orz），之前用注解报错的童鞋请重新拉取本工程，并重新再本地maven仓库打包……对于大家的困扰我很抱歉，最近由于很忙，也没顾上测试我就提交了……
-2. 这个工程的issue已经开放，pr也是开放的，我欢迎大家多提问题，多做改善。
-
-
-
 ## 最快上手
 
-1. 将此工程通过``mvn clean install``打包到本地仓库中。
-
-2. 在你的工程中的``pom.xml``中做如下依赖
+1. 在你的工程中的``pom.xml``中做如下依赖(请使用最新版本1.X)
 
 ```
 		<dependency>
-			<groupId>com.yance</groupId>
-			<artifactId>prometheus-spring-boot-starter</artifactId>
-			<version>0.2.2-personal</version>
-		</dependency>
+          <groupId>com.github.yanceking</groupId>
+          <artifactId>exceptionmessage-spring-boot-starter</artifactId>
+          <version>1.X-personal</version>
+        </dependency>
 ```
 
-3. 在``application.properties``或者``application.yml``中做如下的配置：（至于以上的配置说明后面的章节会讲到）
+2. 在``application.properties``或者``application.yml``中做如下的配置：（至于以上的配置说明后面的章节会讲到）
 
 ```
 spring:
   application:
-    name: 普罗米修斯-demo
+    name: 项目名称
 exceptionnotice:
   dinding:
     phone-num: 钉钉注册时的手机号
@@ -158,7 +104,7 @@ public void anotherMethod(String name, int age) {
 综上，一个简单的例子就完成了
 
 
-## 咋做的
+## 架构
 
 本框架遵循spring boot starter的自动化配置规范而开发的自动化异常通知框架，整体业务流程如下：
 ![架构](/src/main/resources/new.png)
