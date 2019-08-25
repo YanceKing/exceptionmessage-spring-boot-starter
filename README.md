@@ -12,7 +12,7 @@
 1. 在你的工程中的``pom.xml``中做如下依赖(请使用最新版本1.X)
 
 ```
-		<dependency>
+	<dependency>
           <groupId>com.github.yanceking</groupId>
           <artifactId>exceptionmessage-spring-boot-starter</artifactId>
           <version>1.X-personal</version>
