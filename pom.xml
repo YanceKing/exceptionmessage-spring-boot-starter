@@ -4,12 +4,100 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>com.yanceking</groupId>
+	<groupId>com.github.yanceking</groupId>
 	<artifactId>exceptionmessage-spring-boot-starter</artifactId>
 	<version>1.0-personal</version>
 
 	<name>exceptionmessage-spring-boot-starter</name>
 	<description>异常信息处理</description>
+	<url>https://github.com/yanceking/exceptionmessage-spring-boot-starter</url>
+
+	<licenses>
+		<license>
+			<name>Server Side Public License</name>
+			<url>https://www.mongodb.com/licensing/server-side-public-license</url>
+			<distribution>repo</distribution>
+			<comments>A not business-friendly OSS license</comments>
+		</license>
+	</licenses>
+	<scm>
+		<url>https://github.com/yanceking/exceptionmessage-spring-boot-starter</url>
+		<connection>https://github.com/yanceking/exceptionmessage-spring-boot-starter.git</connection>
+	</scm>
+
+	<developers>
+		<developer>
+			<name>yance</name>
+			<id>yance</id>
+			<email>2444864349@qq.com</email>
+			<roles>
+				<role>Developer</role>
+			</roles>
+			<timezone>+8</timezone>
+		</developer>
+	</developers>
+
+	<profiles>
+		<profile>
+			<id>default</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-source-plugin</artifactId>
+						<version>2.2.1</version>
+						<executions>
+							<execution>
+								<phase>package</phase>
+								<goals>
+									<goal>jar-no-fork</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-javadoc-plugin</artifactId>
+						<version>2.10.4</version>
+						<executions>
+							<execution>
+								<phase>package</phase>
+								<goals>
+									<goal>jar</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-gpg-plugin</artifactId>
+						<version>1.6</version>
+						<executions>
+							<execution>
+								<phase>verify</phase>
+								<goals>
+									<goal>sign</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+			<distributionManagement>
+				<snapshotRepository>
+					<id>ossrh</id>
+					<url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+				</snapshotRepository>
+				<repository>
+					<id>ossrh</id>
+					<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+				</repository>
+			</distributionManagement>
+		</profile>
+	</profiles>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
@@ -24,59 +112,38 @@
 		<java.version>1.8</java.version>
 	</properties>
 
-
-
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-configuration-processor</artifactId>
 			<optional>true</optional>
 		</dependency>
-
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-aop</artifactId>
 		</dependency>
-
 		<dependency>
 			<groupId>com.google.code.gson</groupId>
 			<artifactId>gson</artifactId>
 		</dependency>
-
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-redis</artifactId>
 			<optional>true</optional>
 		</dependency>
-
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpclient</artifactId>
 		</dependency>
-
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-mail</artifactId>
 			<optional>true</optional>
 		</dependency>
-
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 			<optional>true</optional>
 		</dependency>
 	</dependencies>
-
-	<distributionManagement>
-		<repository>
-			<id>deploy</id>
-			<name>private-framework-repo</name>
-			<url>http://repo.codef.top/repository/maven-releases/</url>
-		</repository>
-		<snapshotRepository>
-			<id>deploy</id>
-			<name>public-framework-repo</name>
-			<url>http://repo.codef.top/repository/maven-snapshots/</url>
-		</snapshotRepository>
-	</distributionManagement>
 </project>

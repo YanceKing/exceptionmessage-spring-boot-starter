@@ -1,6 +1,6 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-com.kuding.config.ExceptionNoticeConfig,\
-com.kuding.config.ExceptionNoticeEmailConfig,\
-com.kuding.config.ExceptionNoticeRedisConfiguration,\
-com.kuding.config.ExceptionNoticeWebListenConfig,\
-com.kuding.config.DingdingExceptionNoticeConfig
+com.yance.config.ExceptionNoticeConfig,\
+com.yance.config.ExceptionNoticeEmailConfig,\
+com.yance.config.ExceptionNoticeRedisConfiguration,\
+com.yance.config.ExceptionNoticeWebListenConfig,\
+com.yance.config.DingdingExceptionNoticeConfig

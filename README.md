@@ -67,7 +67,7 @@
 
 ```
 		<dependency>
-			<groupId>com.kuding</groupId>
+			<groupId>com.yance</groupId>
 			<artifactId>prometheus-spring-boot-starter</artifactId>
 			<version>0.2.2-personal</version>
 		</dependency>
