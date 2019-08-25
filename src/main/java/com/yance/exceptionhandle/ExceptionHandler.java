@@ -55,8 +55,7 @@ public class ExceptionHandler {
 	 * 最基础的异常通知的创建方法
 	 * 
 	 * @param exception 异常信息
-	 * 
-	 * @return
+	 * @return ExceptionNotice
 	 */
 	public ExceptionNotice createNotice(RuntimeException exception) {
 		if (containsException(exception)) {
@@ -106,12 +105,11 @@ public class ExceptionHandler {
 
 	/**
 	 * 创建一个http请求异常的通知
-	 * 
-	 * @param exception
-	 * @param url
-	 * @param param
-	 * @param requesBody
-	 * @param headers
+	 * @param exception 异常
+	 * @param url url
+	 * @param param param
+	 * @param requesBody requesBody
+	 * @param headers headers
 	 * @return HttpExceptionNotice
 	 */
 	public HttpExceptionNotice createHttpNotice(RuntimeException exception, String url, Map<String, String> param,
