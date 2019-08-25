@@ -286,4 +286,3 @@ spring:
     - ``exceptionnotice.listen-type=common``时``@ExceptionListener``可以加到任意类上，任意方法上
     - ``exceptionnotice.listen-type=web-mvc``时，``@ExceptionListener``只能加在Controller层即带有``@Controller``或``@RestController``的类或者方法上，方法上也需要有对应的``@RequestMapping``相关的注解
 
-[![Fork me on Gitee](https://gitee.com/ITEater/prometheus-spring-boot-starter/widgets/widget_3.svg?color=18181a)](https://gitee.com/ITEater/prometheus-spring-boot-starter)
