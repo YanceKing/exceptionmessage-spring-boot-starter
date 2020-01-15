@@ -1,5 +1,8 @@
 package com.yance;
 
+/**
+ * @author yance
+ */
 public class ExceptionNoticeException extends RuntimeException {
 
 	public ExceptionNoticeException(String message) {
